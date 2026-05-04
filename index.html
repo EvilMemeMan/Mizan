@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="theme-color" content="#09090B">
+<title>Mizan — Egypt Economic Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090B;--surface:#111113;--card:#18181B;--card-h:#1E1E22;
+  --gold:#C9A84C;--gold-dim:#7A6128;--gold-glow:rgba(201,168,76,.12);
+  --ivory:#F0EAD6;--ivory-mid:#B8A898;--ivory-dim:#6B5E50;
+  --border:#27272A;--red:#C0392B;--red-bg:rgba(192,57,43,.08);--red-border:rgba(192,57,43,.25);
+  --green:#27AE60;--green-bg:rgba(39,174,96,.1);--green-border:rgba(39,174,96,.3);
+  --amber:#D4A84B;--amber-bg:rgba(212,168,75,.1);--amber-border:rgba(212,168,75,.25);
+  --egyptian:#C9A84C;--north:#4A90C4;--south:#C47A40;
+  --m-mil:#9B2335;--m-ren:#9B7023;--m-anc:#235C2E;--m-vie:#1E4076;
+  --m-mor:#6B1E4A;--m-mit:#2E3066;--m-uae:#1E6666;--m-afc:#3D6622;
+  --m-sin:#4A3580;--m-chi:#8B1E00;
+  --radius:6px;--header-h:62px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ivory);font-family:'Source Serif 4',Georgia,serif;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:300;background:rgba(9,9,11,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.hdr-main{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 20px}
+.brand{flex-shrink:0}
+.brand-row{display:flex;align-items:baseline;gap:8px}
+.brand-ar{font-family:'Cairo',sans-serif;font-size:20px;font-weight:700;color:var(--gold);line-height:1}
+.brand-div{width:1px;height:16px;background:var(--border);align-self:center}
+.brand-en{font-family:'Playfair Display',serif;font-size:16px;font-weight:400;color:var(--ivory-mid)}
+.brand-sub{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory-dim);font-family:'Cairo',sans-serif}
+.hdr-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.hdr-date{font-size:9.5px;color:var(--ivory-dim);display:none}
+.icon-btn{background:none;border:1px solid var(--border);color:var(--ivory-dim);width:32px;height:32px;border-radius:var(--radius);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .18s;position:relative;flex-shrink:0}
+.icon-btn:hover{border-color:var(--gold-dim);color:var(--gold);background:var(--gold-glow)}
+.notif-dot{position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--green);display:none;border:1.5px solid var(--bg)}
+.notif-dot.on{display:block}
+.bm-count{position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:var(--gold);color:#000;font-size:8px;font-weight:700;display:none;align-items:center;justify-content:center;font-family:'Cairo',sans-serif}
+.bm-count.on{display:flex}
+
+/* TICKER */
+.ticker{background:var(--surface);border-bottom:1px solid var(--border);padding:6px 20px;display:flex;align-items:center;gap:16px;overflow-x:auto;scrollbar-width:none;min-height:32px}
+.ticker::-webkit-scrollbar{display:none}
+.ticker-item{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.ticker-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ivory-dim);font-family:'Cairo',sans-serif;font-weight:600}
+.ticker-val{font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;color:var(--ivory-mid)}
+.ticker-val.up{color:var(--green)}
+.ticker-val.down{color:var(--red)}
+.ticker-sep{width:1px;height:14px;background:var(--border);flex-shrink:0}
+.ticker-loading{font-size:10px;color:var(--ivory-dim);font-family:'Cairo',sans-serif;animation:breathe 2s ease-in-out infinite}
+.ticker-refresh{background:none;border:none;color:var(--ivory-dim);font-size:11px;cursor:pointer;padding:0 4px;transition:color .18s;flex-shrink:0}
+.ticker-refresh:hover{color:var(--gold)}
+
+/* TAB NAV */
+.tab-scroll{overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.tab-scroll::-webkit-scrollbar{display:none}
+.tab-nav{display:flex;padding:0 20px;min-width:max-content}
+.tab-btn{padding:10px 16px;font-size:12px;font-family:'Cairo',sans-serif;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--ivory-dim);transition:all .18s;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab-btn:hover{color:var(--ivory-mid)}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* GOLD RULE */
+.gold-rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold) 40%,var(--gold) 60%,transparent);opacity:.2}
+
+/* SETTINGS */
+.settings-panel{background:var(--surface);border-bottom:1px solid var(--border);max-height:0;overflow:hidden;transition:max-height .35s ease}
+.settings-panel.open{max-height:500px}
+.settings-inner{padding:16px 20px}
+.s-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-family:'Cairo',sans-serif;font-weight:600}
+.api-input{width:100%;background:var(--card);border:1px solid var(--border);color:var(--ivory);padding:8px 12px;border-radius:var(--radius);font-size:12px;font-family:'SF Mono','Fira Code',monospace;outline:none;transition:border-color .2s;margin-bottom:8px}
+.api-input:focus{border-color:var(--gold-dim)}
+.s-note{font-size:10px;color:var(--ivory-dim);line-height:1.5;margin-bottom:14px}
+.s-note strong{color:var(--ivory-mid)}
+.s-div{height:1px;background:var(--border);margin:12px 0}
+.notif-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.notif-lbl{font-size:11.5px;color:var(--ivory-mid);margin-bottom:2px}
+.notif-sub{font-size:10px;color:var(--ivory-dim);line-height:1.4}
+.s-btn{background:var(--card);border:1px solid var(--border);color:var(--ivory-dim);padding:6px 14px;border-radius:var(--radius);font-size:11px;font-family:'Cairo',sans-serif;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0}
+.s-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
+.s-btn.active{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
+.s-btn.denied{background:var(--red-bg);border-color:var(--red-border);color:var(--red);cursor:default}
+.interval-row{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.interval-lbl{font-size:10px;color:var(--ivory-dim);font-family:'Cairo',sans-serif}
+.int-chip{padding:3px 10px;border-radius:12px;font-size:10px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--ivory-dim);transition:all .15s;font-family:'Cairo',sans-serif}
+.int-chip.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:700}
+.notif-status{font-size:10px;color:var(--ivory-dim);margin-top:8px;padding:7px 10px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);line-height:1.5}
+.notif-status.active{border-color:var(--green-border);color:#7DBF7D}
+.notif-warn{font-size:10px;color:var(--amber);margin-top:6px;line-height:1.5;padding:6px 10px;background:var(--amber-bg);border-radius:4px;border:1px solid var(--amber-border)}
+
+/* STATUS BAR */
+.status-bar{display:flex;align-items:center;justify-content:space-between;padding:7px 20px;background:var(--surface);border-bottom:1px solid var(--border);visibility:hidden}
+.status-bar.visible{visibility:visible}
+.status-left{display:flex;align-items:center;gap:8px}
+.status-txt{font-size:10px;color:var(--ivory-dim)}
+.live-badge{font-size:8px;font-family:'Cairo',sans-serif;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);display:none;letter-spacing:.5px}
+.live-badge.on{display:inline-block}
+.sm-btn{background:none;border:1px solid var(--gold-dim);color:var(--gold);padding:3px 10px;border-radius:4px;font-size:10px;cursor:pointer;transition:all .18s;font-family:'Cairo',sans-serif;font-weight:600}
+.sm-btn:hover{background:var(--gold);color:#000}
+.sm-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* PAGES */
+.page{display:none}
+.page.active{display:block}
+.page-inner{max-width:760px;margin:0 auto;padding:20px 20px 80px}
+.models-inner{max-width:1160px;margin:0 auto;padding:20px 20px 80px}
+
+/* ── GENERIC COMPONENTS ── */
+.section-eyebrow{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:'Cairo',sans-serif;font-weight:700;margin-bottom:6px}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,28px);font-weight:600;color:var(--ivory);margin-bottom:10px}
+.section-desc{font-size:13px;line-height:1.7;color:var(--ivory-dim);font-weight:300;margin-bottom:24px}
+.page-header{text-align:center;padding:28px 0 24px;border-bottom:1px solid var(--border);margin-bottom:24px}
+
+.chips{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;flex-wrap:wrap}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--ivory-dim);transition:all .18s;white-space:nowrap;font-family:'Cairo',sans-serif}
+.chip:hover{border-color:var(--ivory-dim);color:var(--ivory-mid)}
+.chip.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:700}
+
+.fetch-area{text-align:center;padding:32px 0 24px}
+.fetch-btn{background:var(--gold);color:#0A0A0A;border:none;padding:13px 40px;border-radius:var(--radius);font-family:'Playfair Display',serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 0 30px rgba(201,168,76,.18)}
+.fetch-btn:hover{background:#DFB94E;transform:translateY(-1px);box-shadow:0 4px 40px rgba(201,168,76,.32)}
+.fetch-btn:active{transform:translateY(0)}
+.fetch-btn:disabled{background:var(--gold-dim);cursor:not-allowed;transform:none;box-shadow:none}
+.fetch-hint{font-size:11px;color:var(--ivory-dim);margin-top:10px;line-height:1.6}
+
+.loading{display:none;text-align:center;padding:80px 20px}
+.load-icon{font-size:36px;display:block;margin-bottom:18px;animation:spin 2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--ivory-mid);margin-bottom:10px;animation:breathe 2s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.4}50%{opacity:1}}
+.load-sub{font-size:11px;color:var(--ivory-dim);line-height:1.9}
+
+.error-box{display:none;background:var(--red-bg);border:1px solid var(--red-border);border-radius:var(--radius);padding:14px;margin-bottom:16px;font-size:13px;color:#E07070;line-height:1.6}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.sec-marker{display:flex;align-items:center;gap:10px;margin:24px 0 14px;color:var(--ivory-dim);font-size:9px;letter-spacing:2px;text-transform:uppercase;font-family:'Cairo',sans-serif}
+.sec-marker::before,.sec-marker::after{content:'';flex:1;height:1px;background:var(--border)}
+.feed-hdr{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:12px;margin-bottom:18px;border-bottom:1px solid var(--border)}
+.feed-title{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;color:var(--gold)}
+.feed-count{font-size:10px;color:var(--ivory-dim)}
+
+/* ── NEWS CARD ── */
+.card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;overflow:hidden;transition:border-color .2s,background .2s;opacity:0;animation:slideUp .36s ease forwards;cursor:pointer}
+.card:hover{border-color:var(--ivory-dim);background:var(--card-h)}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.card.positive::before{background:var(--green)}
+.card.negative::before{background:var(--red)}
+.card.neutral::before{background:var(--border)}
+.card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.src-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;letter-spacing:1px;text-transform:uppercase;font-family:'Cairo',sans-serif;font-weight:700}
+.src-badge.Egyptian{color:var(--egyptian)}
+.src-badge.GlobalNorth{color:var(--north)}
+.src-badge.GlobalSouth{color:var(--south)}
+.pip{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.Egyptian .pip{background:var(--egyptian)}
+.GlobalNorth .pip{background:var(--north)}
+.GlobalSouth .pip{background:var(--south)}
+.card-actions{display:flex;align-items:center;gap:6px}
+.card-date{font-size:9px;color:var(--ivory-dim)}
+.bm-btn{background:none;border:none;cursor:pointer;font-size:14px;opacity:.4;transition:opacity .18s;padding:0;line-height:1;flex-shrink:0}
+.bm-btn:hover,.bm-btn.saved{opacity:1}
+.card-hl{font-family:'Playfair Display',serif;font-size:15.5px;font-weight:600;line-height:1.3;color:var(--ivory);margin-bottom:8px}
+.card-dig{font-size:12.5px;line-height:1.68;color:var(--ivory-mid);font-weight:300;margin-bottom:10px}
+.card-dig.ar{font-family:'Cairo',sans-serif;font-size:13px;direction:rtl;text-align:right}
+.card-bot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.m-tags{display:flex;flex-wrap:wrap;gap:4px;flex:1}
+.m-tag{font-size:9px;padding:2px 7px;border-radius:3px;font-family:'Cairo',sans-serif;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:rgba(255,255,255,.88);border:1px solid transparent}
+.align-badge{font-size:9.5px;font-family:'Cairo',sans-serif;font-weight:700;white-space:nowrap;flex-shrink:0}
+.align-badge.supports{color:var(--green)}
+.align-badge.challenges{color:var(--red)}
+.align-badge.neutral{color:var(--ivory-dim)}
+.card-link-row{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-link{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--gold-dim);font-family:'Cairo',sans-serif;font-weight:600;text-decoration:none;transition:color .18s}
+.card-link:hover{color:var(--gold)}
+.ar-toggle{background:none;border:1px solid var(--border);color:var(--ivory-dim);padding:2px 8px;border-radius:3px;font-size:9.5px;font-family:'Cairo',sans-serif;cursor:pointer;transition:all .18s}
+.ar-toggle:hover{border-color:var(--gold-dim);color:var(--gold)}
+.ar-toggle.active{background:var(--gold-glow);border-color:var(--gold-dim);color:var(--gold)}
+.no-res{text-align:center;padding:50px 0}
+.no-res-icon{font-size:32px;opacity:.3;margin-bottom:12px}
+.no-res-t{font-family:'Playfair Display',serif;font-size:17px;color:var(--ivory-dim);margin-bottom:6px}
+.no-res-s{font-size:11px;color:var(--ivory-dim);opacity:.6}
+
+/* Coverage Gap Banner */
+.gap-banner{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:10px 14px;margin-bottom:16px;font-size:11px;color:var(--amber);line-height:1.6;display:none}
+.gap-banner.visible{display:block}
+
+/* Weekly Synthesis Bar */
+.synth-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:10px;display:none}
+.synth-bar.visible{display:flex}
+.synth-label{font-size:11px;color:var(--ivory-dim)}
+.synth-btn{background:none;border:1px solid var(--gold-dim);color:var(--gold);padding:4px 12px;border-radius:4px;font-size:10px;cursor:pointer;transition:all .18s;font-family:'Cairo',sans-serif;font-weight:600;white-space:nowrap;flex-shrink:0}
+.synth-btn:hover{background:var(--gold);color:#000}
+
+/* ── MODELS PAGE ── */
+.align-key{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.ak-item{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ivory-dim);font-family:'Cairo',sans-serif}
+.ak-bar{width:24px;height:5px;border-radius:3px}
+.models-grid{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:640px){.models-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.models-grid{grid-template-columns:1fr 1fr 1fr}}
+.mc{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .2s,transform .2s;opacity:0;animation:slideUp .4s ease forwards}
+.mc:hover{border-color:var(--ivory-dim);transform:translateY(-2px)}
+.mc-hdr{padding:16px 18px 12px;border-bottom:1px solid var(--border);position:relative}
+.mc-stripe{position:absolute;left:0;top:0;bottom:0;width:4px}
+.mc-status{display:inline-block;font-size:8px;font-family:'Cairo',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-bottom:8px}
+.mc-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;line-height:1.2;color:var(--ivory);margin-bottom:3px}
+.mc-ar{font-family:'Cairo',sans-serif;font-size:11px;color:var(--ivory-dim)}
+.mc-bar-row{padding:10px 18px;background:var(--surface);border-bottom:1px solid var(--border)}
+.mc-bar-lbl{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.mc-bar-txt{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Cairo',sans-serif;color:var(--ivory-dim)}
+.mc-bar-right{display:flex;align-items:center;gap:5px}
+.mc-bar-pct{font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;color:var(--ivory-mid)}
+.mc-delta{font-size:9.5px;font-family:'Cairo',sans-serif;font-weight:700;transition:all .3s}
+.mc-delta.up{color:var(--green)}
+.mc-delta.down{color:var(--red)}
+.mc-delta.same{color:var(--ivory-dim)}
+.mc-track{height:4px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:6px}
+.mc-fill{height:100%;border-radius:3px;width:0%;transition:width 1.1s cubic-bezier(.4,0,.2,1)}
+/* Sparkline */
+.mc-sparkline{height:28px}
+.mc-sparkline svg{width:100%;height:28px}
+.mc-body{padding:16px 18px}
+.mc-sec{font-size:8px;letter-spacing:1.8px;text-transform:uppercase;font-family:'Cairo',sans-serif;font-weight:700;color:var(--gold);margin-bottom:6px;margin-top:14px}
+.mc-sec:first-child{margin-top:0}
+.mc-txt{font-size:12px;line-height:1.65;color:var(--ivory-mid);font-weight:300}
+.mc-examples{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.mc-ex{font-size:9.5px;padding:2px 7px;border-radius:3px;background:var(--surface);border:1px solid var(--border);color:var(--ivory-dim);font-family:'Cairo',sans-serif}
+.mc-evidence{background:var(--surface);border-radius:5px;padding:10px;margin-top:6px;border-left:3px solid var(--gold-dim)}
+.mc-ev-txt{font-size:11.5px;line-height:1.6;color:var(--ivory-mid);font-weight:300;font-style:italic}
+.mc-news-bar{padding:8px 18px;background:var(--gold-glow);border-top:1px solid var(--border);display:none;font-size:10.5px;color:var(--ivory-dim)}
+.mc-news-bar.visible{display:block}
+.mc-news-lbl{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-family:'Cairo',sans-serif;color:var(--gold-dim);margin-bottom:3px;font-weight:700}
+
+/* ── CALENDAR ── */
+.cal-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.cal-type-badge{font-size:9px;padding:2px 8px;border-radius:3px;font-family:'Cairo',sans-serif;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.event-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;opacity:0;animation:slideUp .36s ease forwards;display:flex;gap:14px;align-items:flex-start}
+.event-card:hover{border-color:var(--ivory-dim)}
+.event-date-col{flex-shrink:0;text-align:center;min-width:44px}
+.event-day{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;line-height:1;color:var(--ivory)}
+.event-month{font-size:9px;font-family:'Cairo',sans-serif;font-weight:600;color:var(--ivory-dim);text-transform:uppercase;letter-spacing:.5px}
+.event-countdown{font-size:8.5px;font-family:'Cairo',sans-serif;color:var(--gold);margin-top:3px;font-weight:600}
+.event-countdown.past{color:var(--ivory-dim)}
+.event-body{flex:1;min-width:0}
+.event-top{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap}
+.event-type{font-size:8px;padding:2px 7px;border-radius:3px;font-family:'Cairo',sans-serif;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.reform-prob{font-size:8px;padding:2px 7px;border-radius:3px;font-family:'Cairo',sans-serif;font-weight:700;letter-spacing:.5px;border:1px solid}
+.reform-prob.high{color:var(--red);border-color:rgba(192,57,43,.4);background:var(--red-bg)}
+.reform-prob.medium{color:var(--amber);border-color:var(--amber-border);background:var(--amber-bg)}
+.reform-prob.low{color:var(--ivory-dim);border-color:var(--border);background:transparent}
+.event-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--ivory);margin-bottom:4px;line-height:1.3}
+.event-desc{font-size:11.5px;line-height:1.6;color:var(--ivory-mid);font-weight:300}
+.event-models{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+
+/* ── REFORMS ── */
+.reform-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;opacity:0;animation:slideUp .36s ease forwards}
+.reform-card:hover{border-color:var(--ivory-dim)}
+.reform-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.reform-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3}
+.reform-source{font-size:9px;color:var(--ivory-dim);margin-top:3px;font-family:'Cairo',sans-serif}
+.pipeline{display:flex;align-items:center;gap:0;margin:12px 0;overflow-x:auto;scrollbar-width:none}
+.pipeline::-webkit-scrollbar{display:none}
+.pl-step{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:60px;flex-shrink:0}
+.pl-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;border:2px solid var(--border);background:var(--surface);color:var(--ivory-dim);transition:all .3s;flex-shrink:0}
+.pl-dot.done{background:var(--green);border-color:var(--green);color:#fff}
+.pl-dot.current{background:var(--gold);border-color:var(--gold);color:#000;animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.4)}50%{box-shadow:0 0 0 6px rgba(201,168,76,0)}}
+.pl-dot.stalled{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.pl-label{font-size:8px;font-family:'Cairo',sans-serif;font-weight:600;color:var(--ivory-dim);text-align:center;letter-spacing:.3px;line-height:1.2}
+.pl-connector{flex:1;height:2px;background:var(--border);margin-top:-18px;min-width:10px}
+.pl-connector.done{background:var(--green)}
+.reform-desc{font-size:12px;line-height:1.65;color:var(--ivory-mid);font-weight:300;margin-top:8px}
+.reform-models{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+
+/* ── REGULATIONS ── */
+.reg-sectors{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:640px){.reg-sectors{grid-template-columns:1fr 1fr}}
+.reg-sector{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.reg-sector-hdr{padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.reg-sector-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--ivory)}
+.reg-sector-loading{font-size:10px;color:var(--ivory-dim);font-family:'Cairo',sans-serif;animation:breathe 2s ease-in-out infinite}
+.reg-sector-done{font-size:9px;color:var(--green);font-family:'Cairo',sans-serif;font-weight:600}
+.reg-list{padding:12px 16px}
+.reg-item{padding:10px 0;border-bottom:1px solid var(--border)}
+.reg-item:last-child{border-bottom:none}
+.reg-name{font-size:12px;font-weight:600;color:var(--ivory);margin-bottom:4px;font-family:'Cairo',sans-serif}
+.reg-current{font-size:11.5px;line-height:1.6;color:var(--ivory-mid);font-weight:300}
+/* Diff view */
+.reg-diff{margin-top:8px;border-radius:4px;overflow:hidden}
+.diff-label{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Cairo',sans-serif;font-weight:700;padding:4px 8px}
+.diff-before{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2)}
+.diff-before .diff-label{color:var(--red)}
+.diff-before-text{font-size:11px;line-height:1.6;color:#E07070;padding:6px 8px;text-decoration:line-through;font-weight:300}
+.diff-after{background:rgba(39,174,96,.08);border:1px solid rgba(39,174,96,.2);margin-top:4px}
+.diff-after .diff-label{color:var(--green)}
+.diff-after-text{font-size:11px;line-height:1.6;color:#7DBF7D;padding:6px 8px;font-weight:300}
+.diff-meta{font-size:9.5px;color:var(--ivory-dim);margin-top:5px;font-family:'Cairo',sans-serif}
+
+/* ── MODALS ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:none;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px 12px 0 0;width:100%;max-width:680px;max-height:88vh;overflow-y:auto;padding:0;animation:slideModal .3s ease}
+@keyframes slideModal{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-hdr{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;z-index:10}
+.modal-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--ivory)}
+.modal-close{background:none;border:1px solid var(--border);color:var(--ivory-dim);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:18px}
+.dd-story-hdr{background:var(--card);border-radius:var(--radius);padding:12px 14px;margin-bottom:18px;border-left:3px solid var(--gold)}
+.dd-loading{text-align:center;padding:40px 0;color:var(--ivory-dim);font-size:13px;font-family:'Playfair Display',serif;animation:breathe 2s ease-in-out infinite}
+.dd-section{margin-bottom:18px}
+.dd-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-family:'Cairo',sans-serif;font-weight:700;color:var(--gold);margin-bottom:8px}
+.dd-text{font-size:13px;line-height:1.7;color:var(--ivory-mid);font-weight:300}
+.dd-impact-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.dd-impact-item{background:var(--card);border-radius:var(--radius);padding:10px 12px;border:1px solid var(--border)}
+.dd-impact-model{font-size:10px;font-family:'Cairo',sans-serif;font-weight:700;margin-bottom:4px}
+.dd-impact-text{font-size:11.5px;color:var(--ivory-mid);line-height:1.55;font-weight:300}
+.dd-watch-list{list-style:none}
+.dd-watch-list li{padding:6px 0;border-bottom:1px solid var(--border);font-size:12.5px;color:var(--ivory-mid);font-weight:300;line-height:1.5;display:flex;gap:8px;align-items:baseline}
+.dd-watch-list li::before{content:'→';color:var(--gold);flex-shrink:0;font-size:10px}
+.dd-watch-list li:last-child{border-bottom:none}
+
+/* Synth Modal */
+.synth-theme{background:var(--card);border-radius:var(--radius);padding:10px 14px;margin-bottom:8px;border:1px solid var(--border)}
+.synth-theme-title{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:var(--ivory);margin-bottom:4px}
+.synth-theme-text{font-size:12px;line-height:1.6;color:var(--ivory-mid);font-weight:300}
+
+/* Bookmarks Modal */
+.bm-empty{text-align:center;padding:40px 0;color:var(--ivory-dim);font-family:'Playfair Display',serif;font-size:15px}
+
+/* ── DESKTOP ── */
+@media(min-width:900px){
+  .hdr-main,.settings-inner,.status-bar{padding-left:40px;padding-right:40px}
+  .tab-nav{padding:0 40px}
+  .ticker{padding:6px 40px}
+  .page-inner,.models-inner{padding-left:40px;padding-right:40px}
+  .hdr-date{display:block}
+  .dd-impact-grid{grid-template-columns:1fr 1fr}
+}
+@media(min-width:680px){
+  .overlay{align-items:center}
+  .modal{border-radius:12px;max-height:82vh}
+}
+@media(max-width:440px){
+  .tab-btn{padding:10px 12px;font-size:11px}
+}
+
+footer{text-align:center;padding:32px 20px;font-size:9.5px;color:var(--ivory-dim);opacity:.35;line-height:1.9}
+</style>
+</head>
+<body>
+
+<!-- ════════ HEADER ════════ -->
+<header>
+  <div class="hdr-main">
+    <div class="brand">
+      <div class="brand-row"><span class="brand-ar">ميزان</span><div class="brand-div"></div><span class="brand-en">Mizan</span></div>
+      <div class="brand-sub">Egypt Economic Intelligence</div>
+    </div>
+    <div class="hdr-right">
+      <span class="hdr-date" id="hdrDate"></span>
+      <button class="icon-btn" onclick="openBookmarks()" title="Bookmarks">🔖<span class="bm-count" id="bmCount"></span></button>
+      <button class="icon-btn" onclick="toggleSettings()" title="Settings">⚙<span class="notif-dot" id="notifDot"></span></button>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker" id="ticker">
+    <span class="ticker-loading" id="tickerLoading">Loading indicators…</span>
+    <button class="ticker-refresh" id="tickerRefresh" onclick="fetchTicker()" style="display:none" title="Refresh">↻</button>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-scroll">
+    <nav class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('news',this)">📰 News</button>
+      <button class="tab-btn" onclick="switchTab('models',this)">📊 Models</button>
+      <button class="tab-btn" onclick="switchTab('calendar',this)">🗓 Calendar</button>
+      <button class="tab-btn" onclick="switchTab('reforms',this)">📋 Reforms</button>
+      <button class="tab-btn" onclick="switchTab('regulations',this)">⚖ Regulations</button>
+    </nav>
+  </div>
+</header>
+<div class="gold-rule"></div>
+
+<!-- ════════ SETTINGS ════════ -->
+<div class="settings-panel" id="settingsPanel">
+  <div class="settings-inner">
+    <div class="s-label">Anthropic API Key</div>
+    <input class="api-input" type="password" id="apiKeyInput" placeholder="sk-ant-api03-…" autocomplete="off" spellcheck="false">
+    <div class="s-note"><strong>Inside Claude.ai:</strong> Leave blank — proxy handles auth.<br><strong>Saved to device / Android WebView:</strong> Enter your key from <strong>console.anthropic.com</strong></div>
+    <div class="s-div"></div>
+    <div class="s-label">News Notifications</div>
+    <div class="notif-row">
+      <div><div class="notif-lbl">Alert me when new stories appear</div><div class="notif-sub">Native notification with headline, models, and alignment when new Egypt economy news is detected.</div></div>
+      <button class="s-btn" id="notifToggle" onclick="toggleNotifications()">Enable</button>
+    </div>
+    <div class="interval-row">
+      <span class="interval-lbl">Check every</span>
+      <div style="display:flex;gap:5px">
+        <button class="int-chip" data-min="15" onclick="setPollingInterval(15,this)">15 min</button>
+        <button class="int-chip active" data-min="30" onclick="setPollingInterval(30,this)">30 min</button>
+        <button class="int-chip" data-min="60" onclick="setPollingInterval(60,this)">1 hr</button>
+      </div>
+    </div>
+    <div class="notif-status" id="notifStatus">Notifications disabled.</div>
+    <div class="notif-warn">⚠ Tab must remain open. For Android: save file, open in Chrome, keep tab pinned.</div>
+    <div class="s-div"></div>
+    <div class="s-label">Cache</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <div class="s-note" style="margin-bottom:0">Ticker: 30min · Calendar: 6h · Reforms: 12h · Regulations: 24h<br>Cached data loads instantly without API calls.</div>
+      <button class="s-btn" onclick="Cache.clearAll();alert('Cache cleared. Tabs will re-fetch on next visit.')">Clear All</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEWS STATUS BAR -->
+<div class="status-bar" id="statusBar">
+  <div class="status-left"><span class="status-txt" id="statusTxt"></span><span class="live-badge" id="liveBadge">● LIVE</span></div>
+  <button class="sm-btn" id="refreshBtn" onclick="fetchNews()">↻ Refresh</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     NEWS PAGE
+════════════════════════════════════════ -->
+<div id="newsPage" class="page active">
+<div class="page-inner">
+
+  <div id="heroState">
+    <div class="fetch-area" style="padding-top:36px">
+      <div style="font-family:'Playfair Display',serif;font-size:48px;color:var(--gold);text-shadow:0 0 60px rgba(201,168,76,.25);margin-bottom:6px">ميزان</div>
+      <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--ivory-mid);margin-bottom:16px;font-family:'Cairo',sans-serif">Egypt Economic Intelligence</div>
+      <div style="font-size:13px;line-height:1.7;color:var(--ivory-dim);max-width:400px;margin:0 auto 28px;font-weight:300">Live news from Egyptian and international sources analyzed against 10 economic models. Tap any card to deep dive. Enable notifications in ⚙ settings.</div>
+      <div style="display:flex;gap:16px;justify-content:center;margin-bottom:28px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ivory-dim)"><span style="width:7px;height:7px;border-radius:50%;background:var(--egyptian);display:inline-block"></span>Egyptian</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ivory-dim)"><span style="width:7px;height:7px;border-radius:50%;background:var(--north);display:inline-block"></span>Global North</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ivory-dim)"><span style="width:7px;height:7px;border-radius:50%;background:var(--south);display:inline-block"></span>Global South</span>
+      </div>
+      <button class="fetch-btn" onclick="fetchNews()">Fetch Today's Briefing</button>
+      <div class="fetch-hint">Al-Ahram · Mada Masr · Reuters · Al Jazeera · FT · Xinhua · ANBA<br>Powered by live AI web search</div>
+    </div>
+  </div>
+
+  <div class="loading" id="newsLoading">
+    <span class="load-icon">⟳</span>
+    <div class="load-title">Scanning news sources…</div>
+    <div class="load-sub">Al-Ahram · Daily News Egypt · Mada Masr · Enterprise Egypt<br>Reuters · FT · Bloomberg · The Guardian<br>Al Jazeera · ANBA · African Business · Xinhua</div>
+  </div>
+
+  <div class="error-box" id="newsError"></div>
+
+  <div class="gap-banner" id="gapBanner"></div>
+  <div class="synth-bar" id="synthBar">
+    <span class="synth-label">Want a 7-day synthesis of Egypt's economic narrative?</span>
+    <button class="synth-btn" onclick="openSynthModal()">Weekly Synthesis</button>
+  </div>
+
+  <div style="margin-bottom:12px;display:none" id="filterRow">
+    <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ivory-dim);margin-bottom:6px;font-family:'Cairo',sans-serif">Filter by Source</div>
+    <div class="chips" id="srcChips">
+      <button class="chip active" data-src="all">All</button>
+      <button class="chip" data-src="Egyptian">🇪🇬 Egyptian</button>
+      <button class="chip" data-src="Global North">🌐 Global North</button>
+      <button class="chip" data-src="Global South">🌍 Global South</button>
+    </div>
+    <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ivory-dim);margin:10px 0 6px;font-family:'Cairo',sans-serif">Filter by Model</div>
+    <div class="chips" id="mdlChips">
+      <button class="chip active" data-mdl="all">All Models</button>
+      <button class="chip" data-mdl="Military State Capitalism">Military</button>
+      <button class="chip" data-mdl="Rentier Economy">Rentier</button>
+      <button class="chip" data-mdl="Productive Anchor State">Anchor State</button>
+      <button class="chip" data-mdl="Vietnam Export Model">Vietnam</button>
+      <button class="chip" data-mdl="Morocco Anchor Tenant">Morocco</button>
+      <button class="chip" data-mdl="German Mittelstand">Mittelstand</button>
+      <button class="chip" data-mdl="UAE Free Zones">UAE Zones</button>
+      <button class="chip" data-mdl="AfCFTA Hub">AfCFTA</button>
+      <button class="chip" data-mdl="Singapore Model">Singapore</button>
+      <button class="chip" data-mdl="China Model">China</button>
+    </div>
+  </div>
+
+  <div id="newsFeed"></div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MODELS PAGE
+════════════════════════════════════════ -->
+<div id="modelsPage" class="page">
+<div class="models-inner">
+  <div class="page-header">
+    <div class="section-eyebrow">Economic Framework</div>
+    <div class="section-title">Ten Models, One Country</div>
+    <div class="section-desc" style="max-width:580px;margin:0 auto 16px">Each model represents a distinct development path. Alignment bars update dynamically after each news fetch. Sparklines show trajectory across fetches.</div>
+    <span style="font-size:10.5px;color:var(--amber);font-family:'Cairo',sans-serif;background:var(--amber-bg);border:1px solid var(--amber-border);padding:6px 12px;border-radius:4px;display:inline-block">⟳ Fetch news to see live-adjusted alignment percentages</span>
+  </div>
+  <div class="align-key">
+    <div class="ak-item"><span class="ak-bar" style="background:var(--m-mil)"></span>Dominant (70–100%)</div>
+    <div class="ak-item"><span class="ak-bar" style="background:var(--m-anc)"></span>Active (40–69%)</div>
+    <div class="ak-item"><span class="ak-bar" style="background:var(--m-mit)"></span>Nascent (10–39%)</div>
+  </div>
+  <div class="models-grid" id="modelsGrid"></div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     CALENDAR PAGE
+════════════════════════════════════════ -->
+<div id="calendarPage" class="page">
+<div class="page-inner">
+  <div class="page-header">
+    <div class="section-eyebrow">Economic Calendar</div>
+    <div class="section-title">Anticipate What's Coming</div>
+    <div class="section-desc">Scheduled events tied to reform windows — IMF reviews, CBE meetings, parliament sessions, budget cycles. Reform probability shows how likely significant economic announcements are around each date.</div>
+  </div>
+  <div class="loading" id="calLoading">
+    <span class="load-icon">⟳</span>
+    <div class="load-title">Fetching upcoming events…</div>
+    <div class="load-sub">IMF schedule · CBE calendar · Egyptian Parliament · World Bank · AfCFTA summits</div>
+  </div>
+  <div class="error-box" id="calError"></div>
+  <div id="calFeed"></div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     REFORMS PAGE
+════════════════════════════════════════ -->
+<div id="reformsPage" class="page">
+<div class="page-inner">
+  <div class="page-header">
+    <div class="section-eyebrow">Reform Tracker</div>
+    <div class="section-title">From Promise to Reality</div>
+    <div class="section-desc">Egypt announces reforms regularly — especially before IMF reviews. The lifecycle tracker shows where each reform actually stands. The gap between Announced and Enacted is where the real story is.</div>
+  </div>
+  <div class="loading" id="refLoading">
+    <span class="load-icon">⟳</span>
+    <div class="load-title">Tracking reform status…</div>
+    <div class="load-sub">Searching Arabic and international sources for reform announcements, legislative progress, and implementation status</div>
+  </div>
+  <div class="error-box" id="refError"></div>
+  <div id="refFeed"></div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     REGULATIONS PAGE
+════════════════════════════════════════ -->
+<div id="regulationsPage" class="page">
+<div class="page-inner">
+  <div class="page-header">
+    <div class="section-eyebrow">Regulatory Framework</div>
+    <div class="section-title">Current Rules + What Changed</div>
+    <div class="section-desc">Fetched from Arabic primary sources (الجريدة الرسمية) and translated inline. Where regulations were recently amended, a before/after diff shows exactly what changed and which reform caused it.</div>
+  </div>
+  <div class="loading" id="regLoading">
+    <span class="load-icon">⟳</span>
+    <div class="load-title">Fetching regulations…</div>
+    <div class="load-sub">5 parallel sectoral searches from Arabic primary sources<br>Results appear as each sector completes</div>
+  </div>
+  <div class="error-box" id="regError"></div>
+  <div class="reg-sectors" id="regGrid"></div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MODALS
+════════════════════════════════════════ -->
+<!-- Deep Dive -->
+<div class="overlay" id="ddOverlay" onclick="closeOverlay('ddOverlay')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Deep Dive Analysis</span>
+      <button class="modal-close" onclick="closeOverlay('ddOverlay')">✕</button>
+    </div>
+    <div class="modal-body" id="ddBody"></div>
+  </div>
+</div>
+
+<!-- Weekly Synthesis -->
+<div class="overlay" id="synthOverlay" onclick="closeOverlay('synthOverlay')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">7-Day Weekly Synthesis</span>
+      <button class="modal-close" onclick="closeOverlay('synthOverlay')">✕</button>
+    </div>
+    <div class="modal-body" id="synthBody"></div>
+  </div>
+</div>
+
+<!-- Bookmarks -->
+<div class="overlay" id="bmOverlay" onclick="closeOverlay('bmOverlay')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Bookmarked Stories</span>
+      <button class="modal-close" onclick="closeOverlay('bmOverlay')">✕</button>
+    </div>
+    <div class="modal-body" id="bmBody"></div>
+  </div>
+</div>
+
+<footer>MIZAN ميزان — Egypt Economic Intelligence · v4.0<br>Egyptian: Al-Ahram · Daily News Egypt · Egypt Independent · Mada Masr · Enterprise Egypt<br>Global North: Reuters · FT · Bloomberg · The Guardian | Global South: Al Jazeera · ANBA · African Business · Xinhua</footer>
+
+<script>
+// ════════════════════════════════════════════════════════
+// 1. MODEL DATA (10 models)
+// ════════════════════════════════════════════════════════
+const MODELS=[
+  {key:"Military State Capitalism",ar:"رأسمالية الدولة العسكرية",color:"var(--m-mil)",hex:"#9B2335",
+   status:"DOMINANT",sBg:"rgba(155,35,53,.2)",sClr:"#E07070",basePct:88,
+   desc:"A political economy where a meritocratic military institution — whose internal promotion is genuinely competitive and performance-based — owns and operates commercial enterprises across the civilian economy. The meritocracy operates inside the uniform; the patronage begins at retirement, when senior officers are placed into leadership of commercial enterprises as post-service rewards rather than on the basis of business competence.",
+   examples:["Pakistan (Fauji Foundation)","Myanmar (Tatmadaw)","Algeria (ANP)","China pre-1998 (PLA)","Indonesia Suharto era"],
+   evidence:"Egypt's military is internally meritocratic — promotion follows genuine performance criteria and the military academy is competitive. This legitimacy is why the Engineering Authority executes infrastructure faster than civilian agencies. But at retirement, generals are placed into leadership of 70+ commercial companies spanning cement, steel, food, pharmaceuticals, petrol stations (Wataniya), mineral water (Safi), hotels, and media — based on military rank, not commercial expertise. These enterprises pay no corporate tax, use conscript labour, face no independent audit, and win government contracts by default. The 2019 constitutional amendments made the military permanent 'guardian of the state'. The meritocracy that builds institutional legitimacy becomes political cover for a commercial empire operating on entirely different principles."},
+
+  {key:"Rentier Economy",ar:"الاقتصاد الريعي",color:"var(--m-ren)",hex:"#9B7023",
+   status:"DOMINANT",sBg:"rgba(155,112,35,.2)",sClr:"#D4A84B",basePct:75,
+   desc:"An economy that earns primary income from geographic position, natural resources, or political leverage rather than productive activity. The state collects rents from chokepoints and redistributes them, reducing accountability to citizens and creating dependency on external flows rather than domestic productivity.",
+   examples:["Gulf states (oil)","Jordan (strategic aid)","Lebanon (finance)","Bolivia (lithium)","Panama (canal)"],
+   evidence:"Egypt's four primary income sources are all rentier: Suez Canal tolls (~$10bn/yr pre-2024 disruptions), tourism (~$14bn FY2025), remittances from ~10 million Egyptians abroad (~$22bn/yr), and Gulf sovereign wealth aid including the $35bn Ras El-Hekma deal. The IMF's $8bn program is itself a rent — money received for geopolitical importance, not economic performance. When Houthis disrupted Red Sea shipping in 2024, Suez revenues collapsed over 60%, illustrating how fragile rent-dependent income is."},
+
+  {key:"Productive Anchor State",ar:"دولة الإنتاج المحورية",color:"var(--m-anc)",hex:"#235C2E",
+   status:"EMERGING",sBg:"rgba(35,92,46,.2)",sClr:"#5DBF72",basePct:42,
+   desc:"A developmental state that acts as strategic architect rather than direct producer — selecting priority sectors, attracting anchor multinationals, building supplier ecosystems, and forcing export discipline. Private investment leads; the state enables without monopolising.",
+   examples:["South Korea 1960s–80s","Taiwan","Singapore","Malaysia (Mahathir era)","Ireland (tech FDI)"],
+   evidence:"Private investment surged to 66% of total investment in Q1 FY2025/26 — the highest in five years. Non-oil manufacturing grew 14.5% in the same quarter. The government implemented 350+ structural reforms between July 2024 and October 2025. Samsung, Oppo, and Xiaomi are now anchor manufacturers in Beni Suef. However, the military's parallel dominance prevents full maturation — the state enables private activity in some sectors while crowding it out in others simultaneously."},
+
+  {key:"Vietnam Export Model",ar:"النموذج الفيتنامي للتصدير",color:"var(--m-vie)",hex:"#1E4076",
+   status:"NASCENT",sBg:"rgba(30,64,118,.2)",sClr:"#6B9ED4",basePct:28,
+   desc:"Export-led industrialisation driven by attracting foreign manufacturers to set up production primarily for export. The state retreats from direct production, liberalises trade, maintains currency competitiveness, and offers a stable low-cost environment for global value chain integration.",
+   examples:["Vietnam (Doi Moi 1986+)","Bangladesh (garments)","Cambodia","Indonesia","Sri Lanka"],
+   evidence:"Non-oil exports grew 17% to $48.6bn in 2025, with engineering and electronic goods reaching $6.47bn (+14%). Mobile phone production tripled to 10 million units as Samsung exports 85–90% of Egyptian TV production to 55+ countries. However, Egypt remains far from Vietnam's export intensity (Vietnam: 94% of GDP; Egypt: ~20%). Four currency devaluations since 2022 destroy the pricing predictability export manufacturing requires."},
+
+  {key:"Morocco Anchor Tenant",ar:"نموذج المستأجر المحوري المغربي",color:"var(--m-mor)",hex:"#6B1E4A",
+   status:"NASCENT",sBg:"rgba(107,30,74,.2)",sClr:"#C47AB0",basePct:30,
+   desc:"The state brokers specific multinational anchor investments in targeted sectors, then systematically builds a domestic supplier ecosystem around them — creating industrial clusters where the anchor's supply chain pulls hundreds of local firms into export-oriented production.",
+   examples:["Morocco (Renault → 270 auto suppliers)","Morocco (Boeing/Safran aerospace)","Costa Rica (Intel)","Ireland","Singapore"],
+   evidence:"Samsung in Beni Suef is Egypt's Renault moment — exporting to 55+ countries. Egypt launched its first electronic circuits market in February 2026 drawing 300+ companies. Chinese industrial units worth $270m opened in the SCZone in 2025. However, Egypt has not yet built the 200+ supplier ecosystem around Samsung the way Morocco built around Renault over a decade."},
+
+  {key:"German Mittelstand",ar:"النموذج الألماني للمؤسسات المتوسطة",color:"var(--m-mit)",hex:"#2E3066",
+   status:"WEAKEST",sBg:"rgba(46,48,102,.2)",sClr:"#8B8ECC",basePct:10,
+   desc:"An economy anchored by thousands of specialised medium-sized manufacturers (50–500 employees) dominating global niches, exporting intensively, training workers through dual vocational systems, and accessing patient long-term bank capital.",
+   examples:["Germany","Austria","Switzerland","Nordic countries","Northern Italy"],
+   evidence:"Egypt's private sector is polarised: enormous informal micro-enterprises at the bottom, large politically-connected conglomerates at the top. The medium enterprise layer barely exists. Egyptian banks lend overwhelmingly to government and large corporates. No dual vocational training system links colleges to factory apprenticeships at scale. This is the model Egypt is furthest from and has done least to build."},
+
+  {key:"UAE Free Zones",ar:"نموذج المناطق الحرة الإماراتية",color:"var(--m-uae)",hex:"#1E6666",
+   status:"ACTIVE",sBg:"rgba(30,102,102,.2)",sClr:"#5DBBBB",basePct:38,
+   desc:"Creating genuinely sovereign economic enclaves with distinct legal regimes, independent commercial courts, streamlined customs, predictable taxation, and efficient regulation — attracting global business that would never come under the standard national regulatory environment.",
+   examples:["UAE (JAFZA, DIFC, ADGM)","Singapore","Qatar (QFC)","Bahrain","Rwanda (Kigali IFC)"],
+   evidence:"The Suez Canal Economic Zone operates with targeted incentives and designated industrial areas. The Golden License (Law No. 159 of 2023) consolidates all approvals into one permit — 44 issued by January 2025. 5G launched commercially in June 2025. Electronic circuits market launched in SCZone February 2026. However, the SCZone still lacks genuinely independent courts and operates under standard Egyptian bureaucratic procedures in practice."},
+
+  {key:"AfCFTA Hub",ar:"مركز منطقة التجارة الحرة الأفريقية",color:"var(--m-afc)",hex:"#3D6622",
+   status:"GROWING",sBg:"rgba(61,102,34,.2)",sClr:"#7DBF4A",basePct:36,
+   desc:"Using AfCFTA's tariff-free access to 1.4 billion African consumers as the strategic rationale for making Egypt a manufacturing and logistics hub — producing goods for African markets without import duties, analogous to China's global role but within Africa.",
+   examples:["Ethiopia (East Africa manufacturing)","Kenya (services hub)","Morocco (auto exports to Africa)","South Africa (regional HQ)","Rwanda (logistics)"],
+   evidence:"The UAE became Egypt's top export destination in 2025 with a 131% surge to $6.58bn — partly re-export to Gulf and African markets. Non-oil exports rose 17% to $48.6bn. Egypt has pharmaceutical manufacturing capacity that could serve African generic medicine demand at scale. The constraint: Egypt still exports mostly commodities rather than finished manufactured goods."},
+
+  {key:"Singapore Model",ar:"النموذج السنغافوري",color:"var(--m-sin)",hex:"#4A3580",
+   status:"ASPIRATIONAL",sBg:"rgba(74,53,128,.2)",sClr:"#9B8ECC",basePct:12,
+   desc:"A city-state developmental model built on meritocratic civil service, zero tolerance for corruption, rule of law, strategic FDI attraction, genuine regulatory sovereignty, and first-world institutional depth — achieving a first-world economy from a third-world starting point in one generation under Lee Kuan Yew.",
+   examples:["Singapore","Hong Kong (pre-2020)","Botswana (partial)","Estonia (digital governance)","Rwanda (institutional reform)"],
+   evidence:"Egypt constantly invokes Singapore rhetorically — the New Administrative Capital, Golden License, Vision 2030 language all echo it. But Singapore's model requires meritocratic civil service (not patronage-based appointments), zero corruption tolerance (Egypt ranks 108th on Transparency International CPI), and genuinely independent regulatory institutions. The military patronage system is structurally incompatible with Singapore's core requirement. Singapore also never had a military commercial empire — its defence force is purely a defence institution. Egypt claims the aspiration; the institutional gap is enormous."},
+
+  {key:"China Model",ar:"النموذج الصيني",color:"var(--m-chi)",hex:"#8B1E00",
+   status:"STRUCTURAL PARALLEL",sBg:"rgba(139,30,0,.2)",sClr:"#E07050",basePct:45,
+   desc:"A developmental model combining single-party political monopoly with state-directed capitalism — the Party sets strategic industrial policy, state banks channel capital to priority sectors, state enterprises anchor key industries, and the private sector flourishes in spaces the state doesn't prioritise, always under Party oversight. Critical feature: state enterprises were forced to compete internationally and export.",
+   examples:["China (PRC)","Vietnam (adapted)","Laos (early stage)","Cambodia (partial)"],
+   evidence:"The structural parallel with Egypt is real: single dominant political force, military/state economic dominance, selective market liberalisation, nationalist legitimacy substituting for democratic legitimacy, and massive infrastructure investment as state-building. But China's model succeeded because the Party forced state enterprises to become globally competitive exporters — Jiang Zemin divested the PLA from commercial business in 1998 and dramatically increased defence budgets to compensate. Egypt's military enterprises serve only the captive domestic market. China also built 70 years of institutional Party depth enabling collective leadership mechanisms. Egypt has a personalised presidency without those safeguards."}
+];
+
+// Model meta for news tags
+const MODEL_META={};
+MODELS.forEach(m=>{
+  MODEL_META[m.key]={color:`var(--m-${m.hex.slice(1,4).toLowerCase()})`,short:m.key.split(' ')[0],hexColor:m.hex};
+});
+// Override shorts for clarity
+const SHORTS={"Military State Capitalism":"Military","Rentier Economy":"Rentier","Productive Anchor State":"Anchor State","Vietnam Export Model":"Vietnam","Morocco Anchor Tenant":"Morocco","German Mittelstand":"Mittelstand","UAE Free Zones":"UAE Zones","AfCFTA Hub":"AfCFTA","Singapore Model":"Singapore","China Model":"China"};
+const COLORS={"Military State Capitalism":"var(--m-mil)","Rentier Economy":"var(--m-ren)","Productive Anchor State":"var(--m-anc)","Vietnam Export Model":"var(--m-vie)","Morocco Anchor Tenant":"var(--m-mor)","German Mittelstand":"var(--m-mit)","UAE Free Zones":"var(--m-uae)","AfCFTA Hub":"var(--m-afc)","Singapore Model":"var(--m-sin)","China Model":"var(--m-chi)"};
+
+// ════════════════════════════════════════════════════════
+// 2. CACHE SYSTEM
+// TTLs: Ticker 30min · Calendar 6hr · Reforms 12hr · Regulations 24hr
+// News is never cached — always live
+// ════════════════════════════════════════════════════════
+const CACHE_TTL={ticker:30*60*1000,calendar:6*60*60*1000,reforms:12*60*60*1000,regulations:24*60*60*1000};
+const CACHE_PREFIX='mizan_v4_';
+
+const Cache={
+  set(key,data){
+    try{
+      localStorage.setItem(CACHE_PREFIX+key,JSON.stringify({data,ts:Date.now()}));
+    }catch(e){/* storage full or unavailable */}
+  },
+  get(key,ttl){
+    try{
+      const raw=localStorage.getItem(CACHE_PREFIX+key);
+      if(!raw)return null;
+      const {data,ts}=JSON.parse(raw);
+      if(Date.now()-ts>ttl)return null; // expired
+      return data;
+    }catch{return null}
+  },
+  clear(key){
+    try{localStorage.removeItem(CACHE_PREFIX+key)}catch{}
+  },
+  clearAll(){
+    try{Object.keys(localStorage).filter(k=>k.startsWith(CACHE_PREFIX)).forEach(k=>localStorage.removeItem(k))}catch{}
+  },
+  age(key){
+    // Returns human-readable age string e.g. "32 min ago"
+    try{
+      const raw=localStorage.getItem(CACHE_PREFIX+key);
+      if(!raw)return null;
+      const {ts}=JSON.parse(raw);
+      const mins=Math.round((Date.now()-ts)/60000);
+      if(mins<1)return'just now';
+      if(mins<60)return`${mins}m ago`;
+      const hrs=Math.round(mins/60);
+      if(hrs<24)return`${hrs}h ago`;
+      return`${Math.round(hrs/24)}d ago`;
+    }catch{return null}
+  },
+  isAvailable(){try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return true}catch{return false}}
+};
+
+const HAS_STORAGE=Cache.isAvailable();
+
+// Cache status banner helper
+function showCacheBar(containerId,cacheKey,ttl,onRefresh){
+  const age=Cache.age(cacheKey);
+  if(!age)return;
+  const bar=document.createElement('div');
+  bar.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:7px 0;margin-bottom:16px;font-size:10px;color:var(--ivory-dim);border-bottom:1px solid var(--border)';
+  const ttlHr=Math.round(ttl/3600000);
+  bar.innerHTML=`<span>📦 Cached data · fetched ${age} · refreshes every ${ttlHr}h</span><button onclick="${onRefresh}" style="background:none;border:1px solid var(--border);color:var(--gold);padding:2px 9px;border-radius:3px;font-size:9px;cursor:pointer;font-family:Cairo,sans-serif;font-weight:600">Force refresh</button>`;
+  const container=document.getElementById(containerId);
+  if(container)container.insertBefore(bar,container.firstChild);
+}
+
+// ════════════════════════════════════════════════════════
+// 3. STATE
+// ════════════════════════════════════════════════════════
+const S={
+  allNews:[],srcFilter:'all',mdlFilter:'all',fetchedAt:null,isFetching:false,
+  modelHistory:{},// {modelKey: [pct1,pct2,...]}
+  bookmarks:[],prevTitles:new Set(),
+  pollingInterval:30,pollingTimer:null,notifEnabled:false,
+  calFetched:false,refFetched:false,regFetched:false,
+  currentTab:'news'
+};
+
+// ════════════════════════════════════════════════════════
+// 3. INIT
+// ════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('hdrDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+  buildModels();
+  fetchTicker();
+  if(typeof Notification!=='undefined'){
+    if(Notification.permission==='denied') setNotifDenied();
+  }
+});
+
+// ════════════════════════════════════════════════════════
+// 4. NAVIGATION
+// ════════════════════════════════════════════════════════
+function switchTab(tab,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(tab+'Page').classList.add('active');
+  document.getElementById('statusBar').style.visibility=tab==='news'?'':'hidden';
+  S.currentTab=tab;
+  if(tab==='models') setTimeout(animateBars,80);
+  if(tab==='calendar'&&!S.calFetched) fetchCalendar();
+  if(tab==='reforms'&&!S.refFetched) fetchReforms();
+  if(tab==='regulations'&&!S.regFetched) fetchRegulations();
+}
+
+// ════════════════════════════════════════════════════════
+// 5. SETTINGS & NOTIFICATIONS
+// ════════════════════════════════════════════════════════
+function toggleSettings(){document.getElementById('settingsPanel').classList.toggle('open')}
+
+async function toggleNotifications(){
+  if(typeof Notification==='undefined'){setNotifUnsupported();return}
+  if(S.notifEnabled){stopPolling();return}
+  if(Notification.permission==='denied'){setNotifDenied();return}
+  if(Notification.permission==='default'){
+    const p=await Notification.requestPermission();
+    if(p!=='granted'){setNotifDenied();return}
+  }
+  startPolling();
+}
+function startPolling(){
+  S.notifEnabled=true;
+  const btn=document.getElementById('notifToggle');
+  btn.textContent='Disable';btn.classList.add('active');
+  document.getElementById('notifDot').classList.add('on');
+  document.getElementById('liveBadge').classList.add('on');
+  S.pollingTimer=setInterval(silentFetch,S.pollingInterval*60*1000);
+  updateNotifStatus();
+}
+function stopPolling(){
+  S.notifEnabled=false;clearInterval(S.pollingTimer);S.pollingTimer=null;
+  const btn=document.getElementById('notifToggle');btn.textContent='Enable';btn.classList.remove('active');
+  document.getElementById('notifDot').classList.remove('on');
+  document.getElementById('liveBadge').classList.remove('on');
+  document.getElementById('notifStatus').textContent='Notifications disabled.';
+  document.getElementById('notifStatus').classList.remove('active');
+}
+function setNotifDenied(){
+  const btn=document.getElementById('notifToggle');btn.textContent='Blocked';btn.classList.add('denied');
+  document.getElementById('notifStatus').textContent='Blocked by browser. Tap the lock icon in address bar → Notifications → Allow, then reload.';
+}
+function setNotifUnsupported(){
+  const btn=document.getElementById('notifToggle');btn.textContent='N/A';btn.classList.add('denied');
+  document.getElementById('notifStatus').textContent='Not available here. Save the file and open in Chrome on your device.';
+}
+function updateNotifStatus(){
+  const st=document.getElementById('notifStatus');
+  const next=new Date(Date.now()+S.pollingInterval*60*1000);
+  st.textContent=`● Monitoring — checks every ${S.pollingInterval}min. Next: ${next.toLocaleTimeString()}`;
+  st.classList.add('active');
+}
+function setPollingInterval(mins,chip){
+  document.querySelectorAll('.int-chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');S.pollingInterval=mins;
+  if(S.notifEnabled){clearInterval(S.pollingTimer);S.pollingTimer=setInterval(silentFetch,mins*60*1000);updateNotifStatus()}
+}
+function sendNotif(story){
+  if(typeof Notification==='undefined'||Notification.permission!=='granted')return;
+  const models=(story.models||[]).map(m=>SHORTS[m]||m).join(', ');
+  const align=story.modelAlignment==='supports'?'↑':story.modelAlignment==='challenges'?'↓':'→';
+  const n=new Notification(`🏛 ${story.title}`,{
+    body:`${story.source} · ${align} ${story.modelAlignment}\nModels: ${models}`,
+    tag:'mizan-'+Date.now()
+  });
+  n.onclick=()=>{window.focus();n.close()};
+}
+
+// ════════════════════════════════════════════════════════
+// 6. TICKER
+// ════════════════════════════════════════════════════════
+async function fetchTicker(forceRefresh=false){
+  // Check cache first (30 min TTL)
+  if(!forceRefresh&&HAS_STORAGE){
+    const cached=Cache.get('ticker',CACHE_TTL.ticker);
+    if(cached){renderTicker(cached,true);return}
+  }
+  document.getElementById('tickerLoading').style.display='block';
+  document.getElementById('tickerRefresh').style.display='none';
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true"}
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({
+      model:"claude-sonnet-4-20250514",max_tokens:400,
+      system:"Return ONLY valid JSON, no markdown: {\"egp_usd\":number,\"inflation_pct\":number,\"reserves_bn\":number,\"cbr_pct\":number,\"updated\":\"date string\"}. Search for: current Egypt EGP USD exchange rate, Egypt inflation rate latest 2026, Egypt foreign reserves billion dollars, Egypt central bank interest rate.",
+      messages:[{role:"user",content:"Get current Egypt economic indicators: EGP/USD rate, inflation %, foreign reserves ($bn), central bank rate (%). Return JSON only."}],
+      tools:[{type:"web_search_20250305",name:"web_search"}]
+    })});
+    if(!res.ok)throw new Error();
+    const data=await res.json();
+    const txt=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+    const m=txt.match(/\{[\s\S]*?\}/);
+    if(!m)throw new Error();
+    const d=JSON.parse(m[0]);
+    if(HAS_STORAGE)Cache.set('ticker',d);
+    renderTicker(d,false);
+  }catch(e){
+    const is429=e.message&&e.message.includes('429');
+    document.getElementById('tickerLoading').textContent=is429?'Rate limited — tap ↻ in 60s':'Could not load indicators';
+    document.getElementById('tickerRefresh').style.display='block';
+  }
+}
+function renderTicker(d,fromCache=false){
+  const ticker=document.getElementById('ticker');
+  const cacheTag=fromCache?`<span style="font-size:8px;color:var(--ivory-dim);opacity:.6;flex-shrink:0">cached ${Cache.age('ticker')||''}</span>`:'';
+  ticker.innerHTML=`
+    <div class="ticker-item"><span class="ticker-label">EGP/USD</span><span class="ticker-val">${d.egp_usd||'—'}</span></div>
+    <div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="ticker-label">Inflation</span><span class="ticker-val ${d.inflation_pct>15?'down':d.inflation_pct<8?'up':''}">${d.inflation_pct||'—'}%</span></div>
+    <div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="ticker-label">Reserves</span><span class="ticker-val up">$${d.reserves_bn||'—'}bn</span></div>
+    <div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="ticker-label">CBR</span><span class="ticker-val">${d.cbr_pct||'—'}%</span></div>
+    <div class="ticker-sep"></div>
+    <span style="font-size:9px;color:var(--ivory-dim);flex-shrink:0">${d.updated||''}</span>
+    ${cacheTag}
+    <button class="ticker-refresh" onclick="fetchTicker(true)" title="Refresh">↻</button>`;
+}
+
+// ════════════════════════════════════════════════════════
+// 7. NEWS SYSTEM
+// ════════════════════════════════════════════════════════
+const NEWS_PROMPT=`You are an economic intelligence analyst specializing in Egypt's economy. Search for the most recent news about Egypt's economy from the past 48 hours.
+
+EGYPTIAN SOURCES (prioritize): Al-Ahram English, Daily News Egypt, Egypt Independent, Mada Masr, Enterprise Egypt, Ahram Online, Al-Mal News
+GLOBAL NORTH: Reuters, Financial Times, Bloomberg, The Guardian, New York Times
+GLOBAL SOUTH: Al Jazeera English, ANBA, African Business Magazine, Xinhua, Arab News
+
+Search queries: "Egypt economy 2026", "Egypt GDP", "Egypt exports", "Egypt IMF", "Egypt investment", "Egypt inflation", "Egypt military economy", "Egypt manufacturing", "Egypt private sector", "Egypt Suez Canal", "Egypt pound", "مصر اقتصاد"
+
+Tag each story against these 10 models:
+1."Military State Capitalism" — military businesses, NSPO, state enterprises, conscript labour economy
+2."Rentier Economy" — Suez Canal, tourism, Gulf aid, remittances, IMF loans
+3."Productive Anchor State" — manufacturing growth, private investment leading, FDI in production
+4."Vietnam Export Model" — export-led, foreign manufacturers, assembly hubs, value chains
+5."Morocco Anchor Tenant" — industrial clusters, multinational anchors, supplier ecosystem
+6."German Mittelstand" — medium enterprises, SME financing, vocational training, niche manufacturing
+7."UAE Free Zones" — economic zones, Golden License, regulatory reform, SCZone
+8."AfCFTA Hub" — Africa trade, continental market, AfCFTA access, Egyptian exports to Africa
+9."Singapore Model" — institutional reform, meritocracy, rule of law, regulatory quality
+10."China Model" — state capitalism, Party-directed economy, strategic industrial policy
+
+RETURN ONLY a valid JSON array. No markdown. No backticks. Start with [.
+
+8–12 items each with:
+{"title":"headline","source":"source name","sourceType":"Egyptian"or"Global North"or"Global South","digest":"2-3 sentences with numbers","models":["Model 1"],"modelAlignment":"supports"or"challenges"or"neutral","sentiment":"positive"or"negative"or"neutral","date":"May 3, 2026","url":"direct url or empty string"}
+
+Get 3–4 Egyptian, 2–3 Global North, 2–3 Global South.`;
+
+async function fetchNews(){
+  if(S.isFetching)return;
+  S.isFetching=true;
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  document.getElementById('heroState').style.display='none';
+  document.getElementById('newsLoading').style.display='block';
+  document.getElementById('newsError').style.display='none';
+  document.getElementById('newsFeed').innerHTML='';
+  document.getElementById('gapBanner').classList.remove('visible');
+  document.getElementById('synthBar').classList.remove('visible');
+  document.getElementById('filterRow').style.display='none';
+  document.getElementById('statusBar').classList.remove('visible');
+  const btn=document.getElementById('refreshBtn');if(btn)btn.disabled=true;
+
+  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true"}
+
+  let messages=[{role:"user",content:`Today is ${new Date().toDateString()}. Fetch Egypt economy news from past 24–48 hours. Return JSON array with URLs where possible.`}];
+
+  try{
+    let txt=null;
+    for(let t=0;t<8;t++){
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:4096,system:NEWS_PROMPT,messages,tools:[{type:"web_search_20250305",name:"web_search"}]})});
+      if(!res.ok){let msg=`API error ${res.status}`;try{const j=await res.json();msg=j.error?.message||msg}catch(_){}if(res.status===401)msg="Invalid API key — enter it in ⚙ settings.";throw new Error(msg)}
+      const data=await res.json();
+      const texts=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+      if(texts.match(/\[[\s\S]{50,}\]/)){txt=texts;break}
+      if(data.stop_reason==="tool_use"){
+        const results=(data.content||[]).filter(b=>b.type==="tool_use").map(b=>({type:"tool_result",tool_use_id:b.id,content:"Executed. Compile into JSON array."}));
+        messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:results.length?results:[{type:"text",text:"Provide JSON array now."}]}];
+        continue;
+      }
+      messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:"Output the JSON array now."}];
+    }
+    if(!txt)throw new Error("No data returned. Please try again.");
+    const m=txt.match(/\[[\s\S]*\]/);if(!m)throw new Error("Could not parse news data.");
+    S.allNews=JSON.parse(m[0]);S.fetchedAt=new Date();
+    if(!Array.isArray(S.allNews)||!S.allNews.length)throw new Error("No stories returned.");
+    S.prevTitles=new Set(S.allNews.map(n=>n.title).filter(Boolean));
+    updateModelPercentages(S.allNews);
+    renderNews();
+  }catch(err){
+    document.getElementById('newsLoading').style.display='none';
+    document.getElementById('heroState').style.display='block';
+    const box=document.getElementById('newsError');box.style.display='block';
+    const is429=err.message&&(err.message.includes('429')||err.message.toLowerCase().includes('rate'));
+    box.innerHTML=is429
+      ?`<strong>Rate Limited (429)</strong> — Too many API requests in a short period. Wait 60 seconds then try again. <span id="rateCd"></span>`
+      :`<strong>Error:</strong> ${err.message}`;
+    if(is429)startRateCountdown('rateCd',60,()=>{box.style.display='none'});
+  }finally{
+    S.isFetching=false;if(btn)btn.disabled=false;
+  }
+}
+
+function renderNews(){
+  document.getElementById('newsLoading').style.display='none';
+  document.getElementById('heroState').style.display='none';
+  document.getElementById('statusBar').classList.add('visible');
+  document.getElementById('filterRow').style.display='block';
+  document.getElementById('synthBar').classList.add('visible');
+  document.getElementById('statusTxt').textContent=`${S.allNews.length} stories · ${S.fetchedAt.toLocaleTimeString()}`;
+  showCoverageGap();
+  applyFilters();
+}
+
+function applyFilters(){
+  const feed=document.getElementById('newsFeed');feed.innerHTML='';
+  let items=S.allNews;
+  if(S.srcFilter!=='all')items=items.filter(n=>normType(n.sourceType)===S.srcFilter);
+  if(S.mdlFilter!=='all')items=items.filter(n=>Array.isArray(n.models)&&n.models.includes(S.mdlFilter));
+  document.getElementById('statusTxt').textContent=`${items.length} of ${S.allNews.length} stories · ${S.fetchedAt.toLocaleTimeString()}`;
+  if(!items.length){feed.innerHTML=`<div class="no-res"><div class="no-res-icon">🔍</div><div class="no-res-t">No stories match</div><div class="no-res-s">Try a different filter</div></div>`;return}
+  const hdr=document.createElement('div');hdr.className='feed-hdr';
+  hdr.innerHTML=`<span class="feed-title">Today's Briefing</span><span class="feed-count">${items.length} stor${items.length!==1?'ies':'y'}</span>`;
+  feed.appendChild(hdr);
+  if(S.srcFilter==='all'){
+    let idx=0;
+    [['🇪🇬 Egyptian Sources','Egyptian'],['🌐 Global North','Global North'],['🌍 Global South','Global South']].forEach(([lbl,key])=>{
+      const grp=items.filter(n=>normType(n.sourceType)===key);if(!grp.length)return;
+      const mk=document.createElement('div');mk.className='sec-marker';mk.textContent=lbl;feed.appendChild(mk);
+      grp.forEach(item=>feed.appendChild(buildNewsCard(item,idx++)));
+    });
+  }else{items.forEach((item,i)=>feed.appendChild(buildNewsCard(item,i)))}
+}
+
+function normType(t){
+  if(!t)return'Egyptian';const c=t.trim();
+  if(c==='Egyptian')return'Egyptian';
+  if(c==='Global North'||c==='GlobalNorth')return'Global North';
+  if(c==='Global South'||c==='GlobalSouth')return'Global South';
+  return c;
+}
+
+function buildNewsCard(item,idx){
+  const card=document.createElement('div');
+  card.className=`card ${(item.sentiment||'neutral').toLowerCase()}`;
+  card.style.animationDelay=`${Math.min(idx*.04,.32)}s`;
+  card.onclick=()=>openDeepDive(item);
+  const sCls=normType(item.sourceType).replace(' ','');
+  const tags=(item.models||[]).filter(m=>COLORS[m]).map(m=>`<span class="m-tag" style="background:${COLORS[m]}99;border-color:${COLORS[m]}66">${SHORTS[m]||m}</span>`).join('');
+  const align=(item.modelAlignment||'neutral').toLowerCase();
+  const ab=tags?`<span class="align-badge ${align}">${align==='supports'?'↑ Supports':align==='challenges'?'↓ Challenges':'→ Neutral'}</span>`:'';
+  const isBm=S.bookmarks.some(b=>b.title===item.title);
+  const linkRow=item.url&&item.url.startsWith('http')?`<div class="card-link-row"><a class="card-link" href="${item.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Read full article ↗</a><button class="ar-toggle" id="ar-${idx}" onclick="event.stopPropagation();toggleArabic(${idx},this)" data-idx="${idx}">عربي</button></div>`:`<div class="card-link-row" style="justify-content:flex-end"><button class="ar-toggle" id="ar-${idx}" onclick="event.stopPropagation();toggleArabic(${idx},this)" data-idx="${idx}">عربي</button></div>`;
+  card.innerHTML=`
+    <div class="card-top">
+      <span class="src-badge ${sCls}"><span class="pip"></span>${item.source||'Unknown'}</span>
+      <div class="card-actions">
+        <span class="card-date">${item.date||'Today'}</span>
+        <button class="bm-btn ${isBm?'saved':''}" onclick="event.stopPropagation();toggleBookmark(${idx},this)" title="Bookmark">${isBm?'🔖':'🔖'}</button>
+      </div>
+    </div>
+    <div class="card-hl">${item.title||'Untitled'}</div>
+    <div class="card-dig" id="dig-${idx}">${item.digest||''}</div>
+    <div class="card-bot"><div class="m-tags">${tags}</div>${ab}</div>
+    ${linkRow}`;
+  return card;
+}
+
+// Coverage gap
+function showCoverageGap(){
+  const mentioned=new Set(S.allNews.flatMap(n=>n.models||[]));
+  const missing=MODELS.map(m=>m.key).filter(k=>!mentioned.has(k));
+  const banner=document.getElementById('gapBanner');
+  if(missing.length>0){
+    banner.innerHTML=`⚠ No stories today reference: <strong>${missing.map(k=>SHORTS[k]||k).join(', ')}</strong>. That absence may itself be significant.`;
+    banner.classList.add('visible');
+  }
+}
+
+// Arabic toggle
+async function toggleArabic(idx,btn){
+  const digEl=document.getElementById(`dig-${idx}`);
+  if(!digEl)return;
+  if(btn.classList.contains('active')){
+    btn.classList.remove('active');
+    digEl.textContent=S.allNews[idx]?.digest||'';
+    digEl.classList.remove('ar');return;
+  }
+  btn.textContent='…';
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true"}
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({
+      model:"claude-sonnet-4-20250514",max_tokens:300,
+      messages:[{role:"user",content:`Translate this economic news digest into natural Arabic (فصحى مبسطة). Return only the Arabic translation, nothing else:\n\n${S.allNews[idx]?.digest||''}`}]
+    })});
+    const data=await res.json();
+    const arText=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("").trim();
+    digEl.textContent=arText;digEl.classList.add('ar');
+    btn.textContent='EN';btn.classList.add('active');
+  }catch{btn.textContent='عربي'}
+}
+
+// Bookmarks
+function toggleBookmark(idx,btn){
+  const item=S.allNews[idx];if(!item)return;
+  const bi=S.bookmarks.findIndex(b=>b.title===item.title);
+  if(bi>=0){S.bookmarks.splice(bi,1);btn.classList.remove('saved')}
+  else{S.bookmarks.push(item);btn.classList.add('saved')}
+  const cnt=document.getElementById('bmCount');
+  if(S.bookmarks.length>0){cnt.textContent=S.bookmarks.length;cnt.classList.add('on')}
+  else{cnt.classList.remove('on')}
+}
+
+// Silent polling fetch
+async function silentFetch(){
+  if(S.isFetching)return;
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true"}
+  let messages=[{role:"user",content:`Today is ${new Date().toDateString()}. Search for Egypt economy news from the past 2 hours. Return JSON array.`}];
+  try{
+    let txt=null;
+    for(let t=0;t<6;t++){
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,system:NEWS_PROMPT,messages,tools:[{type:"web_search_20250305",name:"web_search"}]})});
+      if(!res.ok)return;
+      const data=await res.json();
+      const texts=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+      if(texts.match(/\[[\s\S]{50,}\]/)){txt=texts;break}
+      if(data.stop_reason==="tool_use"){
+        const r=(data.content||[]).filter(b=>b.type==="tool_use").map(b=>({type:"tool_result",tool_use_id:b.id,content:"Done. Compile JSON."}));
+        messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:r.length?r:[{type:"text",text:"JSON array now."}]}];continue;
+      }
+      messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:"JSON array now."}];
+    }
+    if(!txt)return;
+    const m=txt.match(/\[[\s\S]*\]/);if(!m)return;
+    const fresh=JSON.parse(m[0]).filter(n=>n.title&&!S.prevTitles.has(n.title));
+    if(fresh.length>0&&S.prevTitles.size>0){
+      fresh.forEach(s=>sendNotif(s));
+      S.allNews=[...fresh,...S.allNews].slice(0,25);
+      fresh.forEach(n=>S.prevTitles.add(n.title));
+      updateModelPercentages(S.allNews);
+      if(S.currentTab==='news'&&S.allNews.length>0)applyFilters();
+      document.getElementById('statusTxt').textContent=`${S.allNews.length} stories · Updated ${new Date().toLocaleTimeString()}`;
+    }
+    if(S.notifEnabled)updateNotifStatus();
+  }catch{/* silent */}
+}
+
+// ════════════════════════════════════════════════════════
+// 8. MODELS
+// ════════════════════════════════════════════════════════
+function buildModels(){
+  const grid=document.getElementById('modelsGrid');grid.innerHTML='';
+  MODELS.forEach((m,i)=>{
+    m.currentPct=m.basePct;
+    if(!S.modelHistory[m.key])S.modelHistory[m.key]=[m.basePct];
+    const el=document.createElement('div');el.className='mc';el.id=`mc-${i}`;
+    el.style.animationDelay=`${i*.05}s`;
+    el.innerHTML=`
+      <div class="mc-hdr">
+        <div class="mc-stripe" style="background:${m.color}"></div>
+        <span class="mc-status" style="background:${m.sBg};color:${m.sClr}">${m.status}</span>
+        <div class="mc-name">${m.key}</div>
+        <div class="mc-ar">${m.ar}</div>
+      </div>
+      <div class="mc-bar-row">
+        <div class="mc-bar-lbl">
+          <span class="mc-bar-txt">Egypt's Alignment</span>
+          <div class="mc-bar-right"><span class="mc-bar-pct" id="pct-${i}">${m.basePct}%</span><span class="mc-delta same" id="delta-${i}"></span></div>
+        </div>
+        <div class="mc-track"><div class="mc-fill" id="fill-${i}" style="background:${m.color}"></div></div>
+        <div class="mc-sparkline" id="spark-${i}"></div>
+      </div>
+      <div class="mc-body">
+        <div class="mc-sec">What This Model Is</div><p class="mc-txt">${m.desc}</p>
+        <div class="mc-sec">Historical Examples</div>
+        <div class="mc-examples">${m.examples.map(e=>`<span class="mc-ex">${e}</span>`).join('')}</div>
+        <div class="mc-sec">Why Egypt Leans This Way</div>
+        <div class="mc-evidence"><p class="mc-ev-txt">${m.evidence}</p></div>
+      </div>
+      <div class="mc-news-bar" id="newsbar-${i}">
+        <div class="mc-news-lbl">From Today's News</div>
+        <div id="newscount-${i}" style="font-size:10.5px;color:var(--ivory-dim)"></div>
+      </div>`;
+    grid.appendChild(el);
+  });
+}
+
+function animateBars(){
+  MODELS.forEach((m,i)=>{
+    const f=document.getElementById(`fill-${i}`);
+    if(f)f.style.width=m.currentPct+'%';
+    renderSparkline(i);
+  });
+}
+
+function renderSparkline(i){
+  const m=MODELS[i];const hist=S.modelHistory[m.key]||[m.basePct];
+  const el=document.getElementById(`spark-${i}`);if(!el||hist.length<2)return;
+  const w=el.offsetWidth||200,h=28,pad=4;
+  const mn=Math.max(0,Math.min(...hist)-5),mx=Math.min(100,Math.max(...hist)+5);
+  const range=mx-mn||10;
+  const pts=hist.map((v,j)=>{
+    const x=pad+(j/(hist.length-1))*(w-pad*2);
+    const y=h-pad-((v-mn)/range)*(h-pad*2);
+    return`${x},${y}`;
+  }).join(' ');
+  // Get the actual hex color for SVG
+  const clr=m.hex||'#C9A84C';
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${clr}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></svg>`;
+}
+
+function updateModelPercentages(newsItems){
+  MODELS.forEach((m,i)=>{
+    const rel=newsItems.filter(n=>Array.isArray(n.models)&&n.models.includes(m.key));
+    const sup=rel.filter(n=>n.modelAlignment==='supports').length;
+    const chal=rel.filter(n=>n.modelAlignment==='challenges').length;
+    const adj=Math.max(-10,Math.min(10,(sup-chal)*2));
+    const newPct=Math.max(5,Math.min(95,m.basePct+adj));
+    m.currentPct=newPct;
+    S.modelHistory[m.key]=[...(S.modelHistory[m.key]||[m.basePct]),newPct].slice(-8);
+    const pE=document.getElementById(`pct-${i}`);
+    const dE=document.getElementById(`delta-${i}`);
+    const fE=document.getElementById(`fill-${i}`);
+    const nb=document.getElementById(`newsbar-${i}`);
+    const nc=document.getElementById(`newscount-${i}`);
+    if(pE)pE.textContent=newPct+'%';
+    if(fE){fE.style.width=newPct+'%';}
+    if(dE){const diff=newPct-m.basePct;dE.textContent=diff>0?`▲ +${diff}%`:diff<0?`▼ ${diff}%`:'';dE.className=`mc-delta ${diff>0?'up':diff<0?'down':'same'}`;}
+    if(nb&&nc){
+      if(rel.length>0){nb.classList.add('visible');const s=sup>0?`${sup} supporting`:'';const c=chal>0?`${chal} challenging`:'';const n=rel.length-sup-chal>0?`${rel.length-sup-chal} neutral`:'';nc.textContent=[s,c,n].filter(Boolean).join(' · ')+` stor${rel.length!==1?'ies':'y'}`;} else{nb.classList.remove('visible');}
+    }
+    renderSparkline(i);
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// 9. CALENDAR
+// ════════════════════════════════════════════════════════
+const CAL_PROMPT=`You are an economic calendar analyst for Egypt. Search for upcoming and recent economic events relevant to Egypt. Include:
+- IMF board meetings and Egypt program review dates
+- CBE (Central Bank of Egypt) monetary policy committee meetings
+- Egyptian Parliament legislative sessions and scheduled votes on economic laws
+- Egyptian cabinet meetings where economic reforms are expected
+- World Bank board meetings relevant to Egypt
+- AfCFTA summit meetings and Egyptian trade negotiations
+- G20/G7 meetings discussing emerging market debt or Egypt
+- GAFI (General Authority for Investment) major investment conferences
+- Egypt's budget presentation cycle (April-May annually)
+- Any announced government reform timelines or deadlines
+
+For each event return JSON. RETURN ONLY a valid JSON array starting with [:
+[{
+  "title":"Event name",
+  "date":"YYYY-MM-DD or approximate e.g. 2026-06-15",
+  "dateDisplay":"e.g. June 15, 2026",
+  "type":"IMF"or"CBE"or"PARLIAMENT"or"CABINET"or"WORLD_BANK"or"INTERNATIONAL"or"TRADE"or"GOVERNMENT",
+  "reformProbability":"high"or"medium"or"low",
+  "description":"2-3 sentences on what this event means for Egypt's economy and reform prospects",
+  "models":["model names most relevant"],
+  "isApproximate":true or false
+}]
+Include 8-15 events spanning the next 6 months plus any recent past events from the last 30 days. Sort by date ascending.`;
+
+async function fetchCalendar(forceRefresh=false){
+  S.calFetched=true;
+  // Check cache (6 hour TTL)
+  if(!forceRefresh&&HAS_STORAGE){
+    const cached=Cache.get('calendar',CACHE_TTL.calendar);
+    if(cached){renderCalendar(cached);showCacheBar('calFeed','calendar',CACHE_TTL.calendar,"fetchCalendar(true)");return}
+  }
+  document.getElementById('calLoading').style.display='block';
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true"}
+  let messages=[{role:"user",content:`Today is ${new Date().toDateString()}. Fetch upcoming economic calendar events relevant to Egypt for the next 6 months. Return JSON array.`}];
+  try{
+    let txt=null;
+    for(let t=0;t<7;t++){
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:3000,system:CAL_PROMPT,messages,tools:[{type:"web_search_20250305",name:"web_search"}]})});
+      if(!res.ok)throw new Error(`API ${res.status}`);
+      const data=await res.json();
+      const texts=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+      if(texts.match(/\[[\s\S]{50,}\]/)){txt=texts;break}
+      if(data.stop_reason==="tool_use"){
+        const r=(data.content||[]).filter(b=>b.type==="tool_use").map(b=>({type:"tool_result",tool_use_id:b.id,content:"Done. Compile calendar JSON array."}));
+        messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:r.length?r:[{type:"text",text:"JSON array now."}]}];continue;
+      }
+      messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:"JSON array now."}];
+    }
+    if(!txt)throw new Error("No calendar data returned.");
+    const m=txt.match(/\[[\s\S]*\]/);if(!m)throw new Error("Parse error.");
+    const events=JSON.parse(m[0]);
+    if(HAS_STORAGE)Cache.set('calendar',events);
+    document.getElementById('calLoading').style.display='none';
+    renderCalendar(events);
+  }catch(err){
+    document.getElementById('calLoading').style.display='none';
+    const e=document.getElementById('calError');e.style.display='block';
+    const is429=err.message&&err.message.includes('429');
+    e.innerHTML=is429?`<strong>Rate Limited (429)</strong> — Wait 60s then switch back to this tab. <span id="calCd"></span>`:`<strong>Error:</strong> ${err.message}`;
+    if(is429){S.calFetched=false;startRateCountdown('calCd',60,()=>{e.style.display='none'})}
+  }
+}
+
+const TYPE_COLORS={"IMF":"#9B2335","CBE":"#235C2E","PARLIAMENT":"#1E4076","CABINET":"#8B6914","WORLD_BANK":"#1E6666","INTERNATIONAL":"#6B1E4A","TRADE":"#3D6622","GOVERNMENT":"#2E3066"};
+
+function renderCalendar(events){
+  const feed=document.getElementById('calFeed');feed.innerHTML='';
+  const now=new Date();
+  const upcoming=events.filter(e=>{const d=new Date(e.date);return d>=new Date(now-30*24*3600*1000)});
+  if(!upcoming.length){feed.innerHTML='<div class="no-res"><div class="no-res-icon">🗓</div><div class="no-res-t">No events found</div></div>';return}
+
+  // Group: upcoming vs recent past
+  const future=upcoming.filter(e=>new Date(e.date)>=now);
+  const past=upcoming.filter(e=>new Date(e.date)<now);
+
+  if(future.length){
+    const mk=document.createElement('div');mk.className='sec-marker';mk.textContent='Upcoming Events';feed.appendChild(mk);
+    future.forEach((ev,i)=>feed.appendChild(buildEventCard(ev,i,now)));
+  }
+  if(past.length){
+    const mk=document.createElement('div');mk.className='sec-marker';mk.textContent='Recent Past (30 days)';feed.appendChild(mk);
+    past.reverse().forEach((ev,i)=>feed.appendChild(buildEventCard(ev,future.length+i,now)));
+  }
+}
+
+function buildEventCard(ev,idx,now){
+  const card=document.createElement('div');card.className='event-card';card.style.animationDelay=`${Math.min(idx*.05,.3)}s`;
+  const evDate=new Date(ev.date);const isPast=evDate<now;
+  const diffDays=Math.round((evDate-now)/(1000*60*60*24));
+  const cdText=isPast?`${Math.abs(diffDays)}d ago`:`in ${diffDays}d`;
+  const typeClr=TYPE_COLORS[ev.type]||'#6B5E50';
+  const models=(ev.models||[]).filter(m=>COLORS[m]).map(m=>`<span class="m-tag" style="background:${COLORS[m]}99;border-color:${COLORS[m]}66">${SHORTS[m]||m}</span>`).join('');
+  card.innerHTML=`
+    <div class="event-date-col">
+      <div class="event-day">${evDate.getDate()}</div>
+      <div class="event-month">${evDate.toLocaleString('en',{month:'short'})} ${evDate.getFullYear()}</div>
+      <div class="event-countdown ${isPast?'past':''}">${cdText}</div>
+    </div>
+    <div class="event-body">
+      <div class="event-top">
+        <span class="event-type" style="background:${typeClr}33;color:${typeClr};border:1px solid ${typeClr}55">${ev.type}${ev.isApproximate?' ~':''}</span>
+        <span class="reform-prob ${ev.reformProbability||'low'}">Reform prob: ${ev.reformProbability?.toUpperCase()||'LOW'}</span>
+      </div>
+      <div class="event-title">${ev.title}</div>
+      <div class="event-desc">${ev.description||''}</div>
+      ${models?`<div class="event-models">${models}</div>`:''}
+    </div>`;
+  return card;
+}
+
+// ════════════════════════════════════════════════════════
+// 10. REFORMS
+// ════════════════════════════════════════════════════════
+const REF_PROMPT=`You are an Egypt economic reform tracker. Search Arabic and English sources for recent Egyptian economic reform announcements and their actual implementation status.
+
+Focus on: IMF program conditions, privatization pledges, military economy reforms, tax law changes, investment law amendments, fuel/electricity subsidy changes, currency policy, Golden License program, SOE transparency requirements, social safety net expansions, AfCFTA commitments.
+
+Lifecycle stages:
+- "announced": Government stated intention, no legislation yet
+- "legislated": Passed into law but not yet implemented operationally
+- "enacted": Actually implemented and operational on the ground
+- "stalled": Was announced but shows no progress, repeatedly delayed
+- "reversed": Was implemented but walked back under pressure
+
+RETURN ONLY a valid JSON array starting with [:
+[{
+  "title":"Reform name",
+  "announcedDate":"Month Year e.g. March 2024",
+  "announcedBy":"President/Parliament/IMF Condition/GAFI/Cabinet",
+  "currentStage":"announced"or"legislated"or"enacted"or"stalled"or"reversed",
+  "stages":{"announced":true,"legislated":true or false,"enacted":true or false,"stalled":true or false,"reversed":true or false},
+  "description":"2-3 sentences on what this reform is and its current real-world status",
+  "models":["relevant model names"],
+  "iMFLinked":true or false,
+  "relatedRegulation":"relevant law or regulation title if applicable"
+}]
+Find 8-12 reforms. Include both progressing reforms and stalled ones — the stalled ones are often the most important.`;
+
+async function fetchReforms(forceRefresh=false){
+  S.refFetched=true;
+  // Check cache (12 hour TTL)
+  if(!forceRefresh&&HAS_STORAGE){
+    const cached=Cache.get('reforms',CACHE_TTL.reforms);
+    if(cached){renderReforms(cached);showCacheBar('refFeed','reforms',CACHE_TTL.reforms,"fetchReforms(true)");return}
+  }
+  document.getElementById('refLoading').style.display='block';
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true"}
+  let messages=[{role:"user",content:`Today is ${new Date().toDateString()}. Search for Egyptian economic reforms and their real implementation status. Include both progressing and stalled reforms. Return JSON array.`}];
+  try{
+    let txt=null;
+    for(let t=0;t<7;t++){
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:3500,system:REF_PROMPT,messages,tools:[{type:"web_search_20250305",name:"web_search"}]})});
+      if(!res.ok)throw new Error(`API ${res.status}`);
+      const data=await res.json();
+      const texts=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+      if(texts.match(/\[[\s\S]{50,}\]/)){txt=texts;break}
+      if(data.stop_reason==="tool_use"){
+        const r=(data.content||[]).filter(b=>b.type==="tool_use").map(b=>({type:"tool_result",tool_use_id:b.id,content:"Done. Compile reforms JSON."}));
+        messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:r.length?r:[{type:"text",text:"JSON now."}]}];continue;
+      }
+      messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:"JSON array now."}];
+    }
+    if(!txt)throw new Error("No reform data returned.");
+    const m=txt.match(/\[[\s\S]*\]/);if(!m)throw new Error("Parse error.");
+    const reforms=JSON.parse(m[0]);
+    if(HAS_STORAGE)Cache.set('reforms',reforms);
+    document.getElementById('refLoading').style.display='none';
+    renderReforms(reforms);
+  }catch(err){
+    document.getElementById('refLoading').style.display='none';
+    const e=document.getElementById('refError');e.style.display='block';
+    const is429=err.message&&err.message.includes('429');
+    e.innerHTML=is429?`<strong>Rate Limited (429)</strong> — Wait 60s then switch back to this tab. <span id="refCd"></span>`:`<strong>Error:</strong> ${err.message}`;
+    if(is429){S.refFetched=false;startRateCountdown('refCd',60,()=>{e.style.display='none'})}
+  }
+}
+
+function renderReforms(reforms){
+  const feed=document.getElementById('refFeed');feed.innerHTML='';
+  if(!reforms.length){feed.innerHTML='<div class="no-res"><div class="no-res-icon">📋</div><div class="no-res-t">No reform data</div></div>';return}
+  // Group by stage
+  const enacted=reforms.filter(r=>r.currentStage==='enacted');
+  const progress=reforms.filter(r=>r.currentStage==='legislated'||r.currentStage==='announced');
+  const stalled=reforms.filter(r=>r.currentStage==='stalled'||r.currentStage==='reversed');
+  let idx=0;
+  if(enacted.length){
+    const mk=document.createElement('div');mk.className='sec-marker';mk.textContent='✓ Enacted';feed.appendChild(mk);
+    enacted.forEach(r=>feed.appendChild(buildReformCard(r,idx++)));
+  }
+  if(progress.length){
+    const mk=document.createElement('div');mk.className='sec-marker';mk.textContent='⟳ In Progress';feed.appendChild(mk);
+    progress.forEach(r=>feed.appendChild(buildReformCard(r,idx++)));
+  }
+  if(stalled.length){
+    const mk=document.createElement('div');mk.className='sec-marker';mk.textContent='⚠ Stalled / Reversed';feed.appendChild(mk);
+    stalled.forEach(r=>feed.appendChild(buildReformCard(r,idx++)));
+  }
+}
+
+const PIPELINE_STEPS=['announced','legislated','enacted'];
+
+function buildReformCard(reform,idx){
+  const card=document.createElement('div');card.className='reform-card';card.style.animationDelay=`${Math.min(idx*.05,.3)}s`;
+  const stage=reform.currentStage||'announced';
+  const isStalled=stage==='stalled'||stage==='reversed';
+  const stages=reform.stages||{announced:true};
+  const models=(reform.models||[]).filter(m=>COLORS[m]).map(m=>`<span class="m-tag" style="background:${COLORS[m]}99;border-color:${COLORS[m]}66">${SHORTS[m]||m}</span>`).join('');
+
+  // Build pipeline HTML
+  let pipelineHTML='<div class="pipeline">';
+  if(isStalled){
+    // Show announced → stalled
+    pipelineHTML+=`<div class="pl-step"><div class="pl-dot done">✓</div><div class="pl-label">Announced</div></div>`;
+    pipelineHTML+=`<div class="pl-connector done"></div>`;
+    pipelineHTML+=`<div class="pl-step"><div class="pl-dot stalled">${stage==='reversed'?'↩':'✗'}</div><div class="pl-label">${stage==='reversed'?'Reversed':'Stalled'}</div></div>`;
+  } else {
+    PIPELINE_STEPS.forEach((s,i)=>{
+      const done=stages[s]===true;const isCurrent=s===stage;
+      pipelineHTML+=`<div class="pl-step"><div class="pl-dot ${done?'done':isCurrent?'current':''}">${done?'✓':i+1}</div><div class="pl-label">${s.charAt(0).toUpperCase()+s.slice(1)}</div></div>`;
+      if(i<PIPELINE_STEPS.length-1)pipelineHTML+=`<div class="pl-connector ${done?'done':''}"></div>`;
+    });
+  }
+  pipelineHTML+='</div>';
+
+  card.innerHTML=`
+    <div class="reform-top">
+      <div>
+        <div class="reform-title">${reform.title}</div>
+        <div class="reform-source">${reform.announcedDate||''} · ${reform.announcedBy||''} ${reform.iMFLinked?'· <span style="color:var(--gold);font-weight:600">IMF-linked</span>':''}</div>
+      </div>
+    </div>
+    ${pipelineHTML}
+    <div class="reform-desc">${reform.description||''}</div>
+    ${reform.relatedRegulation?`<div style="margin-top:8px;font-size:10px;color:var(--gold-dim);font-family:'Cairo',sans-serif">⚖ Related: ${reform.relatedRegulation}</div>`:''}
+    ${models?`<div class="reform-models">${models}</div>`:''}`;
+  return card;
+}
+
+// ════════════════════════════════════════════════════════
+// 11. REGULATIONS
+// ════════════════════════════════════════════════════════
+const REG_SECTORS=[
+  {id:'investment',title:'Investment & Business Law',query:'قانون الاستثمار المصري 2017 والتعديلات الجديدة ترخيص ذهبي GAFI'},
+  {id:'tax',title:'Tax & Fiscal Regulations',query:'قانون الضريبة على الدخل مصر 2023 2024 ضريبة القيمة المضافة التعديلات'},
+  {id:'trade',title:'Trade, Export & Customs',query:'قانون الجمارك المصري 2020 سياسة التصدير منطقة التجارة الحرة الأفريقية'},
+  {id:'military',title:'Military & SOE Framework',query:'قانون الشركات المملوكة للدولة مصر الجهاز الوطني للإنتاج الحربي الإعفاءات الضريبية'},
+  {id:'banking',title:'Banking, Currency & Finance',query:'قانون البنك المركزي المصري 2020 التعديلات سعر الصرف اللوائح المصرفية'}
+];
+
+const REG_PROMPT_TEMPLATE=(query)=>`You are an Egyptian law researcher. Search primarily Arabic sources including:
+- الجريدة الرسمية (Official Gazette of Egypt)
+- منظومة التشريعات المصرية  
+- GAFI Arabic portal
+- مجلس الدولة المصري
+
+Search query: "${query}"
+
+Find the 3-5 most important current regulations in this sector. For each, identify if there was a recent amendment (past 2 years) that changed the regulation significantly.
+
+RETURN ONLY valid JSON array starting with [:
+[{
+  "name":"Regulation/Law name in English",
+  "nameAr":"اسم القانون بالعربية",
+  "currentText":"Current text or summary in English (2-3 sentences)",
+  "hasRecentAmendment":true or false,
+  "beforeText":"What the clause/regulation said BEFORE the amendment (if applicable, in English)",
+  "afterText":"What it says NOW after the amendment (if applicable, in English)",
+  "amendmentDate":"Month Year of amendment if applicable",
+  "amendedBy":"Name of reform/law that caused the change if applicable",
+  "significance":"high"or"medium"or"low"
+}]`;
+
+async function fetchRegulations(forceRefresh=false){
+  S.regFetched=true;
+  // Check cache (24 hour TTL)
+  if(!forceRefresh&&HAS_STORAGE){
+    const cached=Cache.get('regulations',CACHE_TTL.regulations);
+    if(cached){
+      const grid=document.getElementById('regGrid');grid.innerHTML='';
+      document.getElementById('regLoading').style.display='none';
+      REG_SECTORS.forEach(s=>{
+        const sec=document.createElement('div');sec.className='reg-sector';sec.id=`reg-${s.id}`;
+        sec.innerHTML=`<div class="reg-sector-hdr"><div class="reg-sector-title">${s.title}</div><span class="reg-sector-done" id="regload-${s.id}">Cached</span></div><div class="reg-list" id="reglist-${s.id}"></div>`;
+        grid.appendChild(sec);
+      });
+      REG_SECTORS.forEach(s=>{if(cached[s.id])renderRegSector(s.id,cached[s.id])});
+      showCacheBar('regGrid','regulations',CACHE_TTL.regulations,"fetchRegulations(true)");
+      return;
+    }
+  }
+  const grid=document.getElementById('regGrid');grid.innerHTML='';
+  document.getElementById('regLoading').style.display='block';
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true"}
+
+  // Create sector placeholders immediately
+  REG_SECTORS.forEach(s=>{
+    const sec=document.createElement('div');sec.className='reg-sector';sec.id=`reg-${s.id}`;
+    sec.innerHTML=`<div class="reg-sector-hdr"><div class="reg-sector-title">${s.title}</div><span class="reg-sector-loading" id="regload-${s.id}">Fetching…</span></div><div class="reg-list" id="reglist-${s.id}"></div>`;
+    grid.appendChild(sec);
+  });
+  document.getElementById('regLoading').style.display='none';
+
+  // Stagger calls by 4 seconds each to avoid 429
+  const regCache={};
+  const fetches=REG_SECTORS.map((sector,sectorIdx)=>
+    new Promise(resolve=>setTimeout(async()=>{
+      let messages=[{role:"user",content:`Today is ${new Date().toDateString()}. Search Arabic primary legal sources for current Egyptian regulations in this sector. Return JSON array.`}];
+      try{
+        let txt=null;
+        for(let t=0;t<7;t++){
+          const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2500,system:REG_PROMPT_TEMPLATE(sector.query),messages,tools:[{type:"web_search_20250305",name:"web_search"}]})});
+          if(!res.ok){
+            if(res.status===429){
+              const ldEl=document.getElementById(`regload-${sector.id}`);
+              if(ldEl)ldEl.textContent='Rate limited — retry later';
+              resolve();return;
+            }
+            throw new Error(`API ${res.status}`);
+          }
+          const data=await res.json();
+          const texts=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+          if(texts.match(/\[[\s\S]{20,}\]/)){txt=texts;break}
+          if(data.stop_reason==="tool_use"){
+            const r=(data.content||[]).filter(b=>b.type==="tool_use").map(b=>({type:"tool_result",tool_use_id:b.id,content:"Done. Compile regulations JSON."}));
+            messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:r.length?r:[{type:"text",text:"JSON now."}]}];continue;
+          }
+          messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:"JSON array now."}];
+        }
+        if(!txt)throw new Error("No data");
+        const m=txt.match(/\[[\s\S]*\]/);if(!m)throw new Error("Parse error");
+        const regs=JSON.parse(m[0]);
+        regCache[sector.id]=regs;
+        renderRegSector(sector.id,regs);
+      }catch(err){
+        const ldEl=document.getElementById(`regload-${sector.id}`);
+        if(ldEl)ldEl.textContent='Failed';
+        const listEl=document.getElementById(`reglist-${sector.id}`);
+        if(listEl)listEl.innerHTML=`<div style="font-size:11px;color:var(--red);padding:8px 0">${err.message}</div>`;
+      }
+      resolve();
+    }, sectorIdx*4000)) // 4 second stagger between each sector
+  );
+
+  await Promise.allSettled(fetches);
+  // Cache completed results
+  if(HAS_STORAGE&&Object.keys(regCache).length>0)Cache.set('regulations',regCache);
+}
+
+function renderRegSector(sectorId,regs){
+  const ldEl=document.getElementById(`regload-${sectorId}`);
+  if(ldEl){ldEl.textContent='Done';ldEl.className='reg-sector-done';}
+  const listEl=document.getElementById(`reglist-${sectorId}`);if(!listEl)return;
+  listEl.innerHTML='';
+  if(!regs||!regs.length){listEl.innerHTML='<div style="font-size:11px;color:var(--ivory-dim);padding:8px 0">No regulations found</div>';return}
+  regs.forEach(reg=>{
+    const item=document.createElement('div');item.className='reg-item';
+    const diffHTML=reg.hasRecentAmendment&&reg.beforeText&&reg.afterText?`
+      <div class="reg-diff">
+        <div class="diff-before">
+          <div class="diff-label">BEFORE${reg.amendmentDate?' — '+reg.amendmentDate:''}</div>
+          <div class="diff-before-text">${reg.beforeText}</div>
+        </div>
+        <div class="diff-after">
+          <div class="diff-label">AFTER${reg.amendedBy?' — '+reg.amendedBy:''}</div>
+          <div class="diff-after-text">${reg.afterText}</div>
+        </div>
+        ${reg.amendedBy?`<div class="diff-meta">Changed by: ${reg.amendedBy}${reg.amendmentDate?' · '+reg.amendmentDate:''}</div>`:''}
+      </div>`:'';
+    item.innerHTML=`
+      <div class="reg-name">${reg.name}${reg.nameAr?` <span style="font-family:'Cairo',sans-serif;font-weight:400;color:var(--ivory-dim);font-size:11px">/ ${reg.nameAr}</span>`:''}</div>
+      <div class="reg-current">${reg.currentText||''}</div>
+      ${diffHTML}`;
+    listEl.appendChild(item);
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// 12. MODALS
+// ════════════════════════════════════════════════════════
+// Deep Dive
+async function openDeepDive(item){
+  const overlay=document.getElementById('ddOverlay');overlay.classList.add('open');
+  const body=document.getElementById('ddBody');
+  const tags=(item.models||[]).filter(m=>COLORS[m]).map(m=>`<span class="m-tag" style="background:${COLORS[m]}99;border-color:${COLORS[m]}66">${SHORTS[m]||m}</span>`).join(' ');
+  body.innerHTML=`
+    <div class="dd-story-hdr">
+      <div style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-family:'Cairo',sans-serif;margin-bottom:5px">${item.source} · ${item.date||'Today'}</div>
+      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3;margin-bottom:8px">${item.title}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">${tags}</div>
+    </div>
+    <div class="dd-loading">Generating deep analysis…</div>`;
+
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true"}
+
+  const sysPrompt=`You are an expert analyst of Egypt's political economy with deep knowledge of its history, military economy, development models, and reform patterns since 2013. Provide deep contextual analysis of Egypt economy news stories. Return ONLY valid JSON, no markdown:
+{"context":"2-3 paragraph historical context and significance of this story for Egypt's economy","model_impacts":[{"model":"model name","impact":"2 sentences on specific impact","significance":"high"or"medium"or"low"}],"watch_for":["3-5 specific things to watch in next 2-4 weeks as follow-up to this story"],"bottomLine":"1 sentence bottom line assessment"}`;
+
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({
+      model:"claude-sonnet-4-20250514",max_tokens:1200,system:sysPrompt,
+      messages:[{role:"user",content:`Analyze this Egypt economy story:\nTitle: ${item.title}\nSource: ${item.source} (${item.sourceType})\nDigest: ${item.digest}\nModels tagged: ${(item.models||[]).join(', ')}\nAlignment: ${item.modelAlignment}\n\nProvide deep analysis JSON.`}]
+    })});
+    const data=await res.json();
+    const txt=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+    const m=txt.match(/\{[\s\S]*\}/);if(!m)throw new Error("Parse error");
+    const d=JSON.parse(m[0]);
+    renderDeepDive(body,item,d,tags);
+  }catch{
+    body.querySelector('.dd-loading').textContent='Analysis unavailable. Please try again.';
+  }
+}
+
+function renderDeepDive(body,item,d,tags){
+  body.innerHTML=`
+    <div class="dd-story-hdr">
+      <div style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-family:'Cairo',sans-serif;margin-bottom:5px">${item.source} · ${item.date||'Today'}</div>
+      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3;margin-bottom:8px">${item.title}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">${tags}</div>
+    </div>
+    <div class="dd-section">
+      <div class="dd-label">Historical Context & Significance</div>
+      <div class="dd-text">${d.context||''}</div>
+    </div>
+    ${d.bottomLine?`<div style="background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:var(--radius);padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:var(--ivory-mid);font-style:italic;line-height:1.6"><strong style="color:var(--gold);font-style:normal;font-family:'Cairo',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:4px">Bottom Line</strong>${d.bottomLine}</div>`:''} 
+    <div class="dd-section">
+      <div class="dd-label">Model Impacts</div>
+      <div class="dd-impact-grid">${(d.model_impacts||[]).map(mi=>`<div class="dd-impact-item"><div class="dd-impact-model" style="color:${COLORS[mi.model]||'var(--gold)'}">${mi.model} <span style="color:var(--ivory-dim);font-weight:400;font-size:8px">${mi.significance?.toUpperCase()||''}</span></div><div class="dd-impact-text">${mi.impact}</div></div>`).join('')}</div>
+    </div>
+    <div class="dd-section">
+      <div class="dd-label">Watch For (Next 2–4 Weeks)</div>
+      <ul class="dd-watch-list">${(d.watch_for||[]).map(w=>`<li>${w}</li>`).join('')}</ul>
+    </div>
+    ${item.url&&item.url.startsWith('http')?`<a href="${item.url}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--gold);font-family:'Cairo',sans-serif;font-weight:600;text-decoration:none;margin-top:8px">Read full article ↗</a>`:''}`;
+}
+
+// Weekly Synthesis
+async function openSynthModal(){
+  const overlay=document.getElementById('synthOverlay');overlay.classList.add('open');
+  const body=document.getElementById('synthBody');
+  body.innerHTML=`<div class="dd-loading">Synthesizing 7 days of Egypt economy news…</div>`;
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true"}
+  const sysPrompt=`Search for Egypt economy news from the past 7 days. Synthesize into a structured weekly briefing. Return ONLY valid JSON:
+{"narrative":"2-3 paragraph overall narrative of the week — what was the dominant economic story, what direction is Egypt heading","themes":[{"title":"theme name","text":"2 sentences"}],"model_movements":[{"model":"model name","direction":"strengthening"or"weakening"or"stable","reason":"1 sentence"}],"key_data":["specific numbers or data points that defined the week"],"outlook":"1 paragraph on what next week's key risks and opportunities are"}`;
+  let messages=[{role:"user",content:`Today is ${new Date().toDateString()}. Search for Egypt economy news from the past 7 days and provide a weekly synthesis JSON.`}];
+  try{
+    let txt=null;
+    for(let t=0;t<7;t++){
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,system:sysPrompt,messages,tools:[{type:"web_search_20250305",name:"web_search"}]})});
+      if(!res.ok)throw new Error(`API ${res.status}`);
+      const data=await res.json();
+      const texts=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+      if(texts.match(/\{[\s\S]{50,}\}/)){txt=texts;break}
+      if(data.stop_reason==="tool_use"){
+        const r=(data.content||[]).filter(b=>b.type==="tool_use").map(b=>({type:"tool_result",tool_use_id:b.id,content:"Done. Compile synthesis JSON."}));
+        messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:r.length?r:[{type:"text",text:"JSON now."}]}];continue;
+      }
+      messages=[...messages,{role:"assistant",content:data.content},{role:"user",content:"JSON now."}];
+    }
+    if(!txt)throw new Error("No data");
+    const m=txt.match(/\{[\s\S]*\}/);if(!m)throw new Error("Parse error");
+    const d=JSON.parse(m[0]);
+    body.innerHTML=`
+      <div class="dd-section"><div class="dd-label">The Week's Narrative</div><div class="dd-text">${d.narrative||''}</div></div>
+      ${d.key_data?.length?`<div class="dd-section"><div class="dd-label">Key Data Points</div><ul class="dd-watch-list">${d.key_data.map(k=>`<li>${k}</li>`).join('')}</ul></div>`:''}
+      ${d.themes?.length?`<div class="dd-section"><div class="dd-label">Main Themes</div>${d.themes.map(t=>`<div class="synth-theme"><div class="synth-theme-title">${t.title}</div><div class="synth-theme-text">${t.text}</div></div>`).join('')}</div>`:''}
+      ${d.model_movements?.length?`<div class="dd-section"><div class="dd-label">Model Movements</div>${d.model_movements.map(mv=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)"><span style="font-size:18px">${mv.direction==='strengthening'?'↑':mv.direction==='weakening'?'↓':'→'}</span><div><div style="font-size:11px;font-family:'Cairo',sans-serif;font-weight:600;color:${COLORS[mv.model]||'var(--gold)'}">${mv.model}</div><div style="font-size:11px;color:var(--ivory-dim)">${mv.reason}</div></div></div>`).join('')}</div>`:''}
+      ${d.outlook?`<div class="dd-section"><div class="dd-label">Next Week Outlook</div><div class="dd-text">${d.outlook}</div></div>`:''}`;
+  }catch{body.innerHTML='<div class="dd-loading">Synthesis unavailable. Please try again.</div>'}
+}
+
+// Bookmarks
+function openBookmarks(){
+  const overlay=document.getElementById('bmOverlay');overlay.classList.add('open');
+  const body=document.getElementById('bmBody');
+  if(!S.bookmarks.length){body.innerHTML='<div class="bm-empty">No bookmarks yet.<br>Tap 🔖 on any news card.</div>';return}
+  body.innerHTML='';
+  S.bookmarks.forEach((item,i)=>{
+    const tags=(item.models||[]).filter(m=>COLORS[m]).map(m=>`<span class="m-tag" style="background:${COLORS[m]}99;border-color:${COLORS[m]}66">${SHORTS[m]||m}</span>`).join('');
+    const c=document.createElement('div');c.style.cssText='padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer';
+    c.innerHTML=`<div style="font-size:9px;color:var(--ivory-dim);margin-bottom:4px;font-family:Cairo,sans-serif">${item.source} · ${item.date||''}</div><div style="font-family:Playfair Display,serif;font-size:14px;font-weight:600;color:var(--ivory);margin-bottom:6px;line-height:1.3">${item.title}</div><div style="display:flex;flex-wrap:wrap;gap:4px">${tags}</div>`;
+    c.onclick=()=>{closeOverlay('bmOverlay');openDeepDive(item)};
+    body.appendChild(c);
+  });
+}
+
+function closeOverlay(id){document.getElementById(id).classList.remove('open')}
+
+// ════════════════════════════════════════════════════════
+// 13. FILTERS
+// ════════════════════════════════════════════════════════
+document.getElementById('srcChips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip');if(!c)return;
+  document.querySelectorAll('#srcChips .chip').forEach(x=>x.classList.remove('active'));
+  c.classList.add('active');S.srcFilter=c.dataset.src;if(S.allNews.length)applyFilters();
+});
+document.getElementById('mdlChips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip');if(!c)return;
+  document.querySelectorAll('#mdlChips .chip').forEach(x=>x.classList.remove('active'));
+  c.classList.add('active');S.mdlFilter=c.dataset.mdl;if(S.allNews.length)applyFilters();
+});
+
+// Rate limit countdown helper
+function startRateCountdown(elId,seconds,onDone){
+  let s=seconds;
+  const tick=()=>{
+    const el=document.getElementById(elId);
+    if(!el)return;
+    el.textContent=`Retrying in ${s}s…`;
+    if(s<=0){if(onDone)onDone();return}
+    s--;setTimeout(tick,1000);
+  };
+  tick();
+}
+
+// Close modals on escape
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){['ddOverlay','synthOverlay','bmOverlay'].forEach(closeOverlay)}});
+</script>
+</body>
+</html>
